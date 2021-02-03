@@ -52,13 +52,17 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        nbytes = receiveMsg(sock_FD, buffer);
+        // buffer = receiveMsg(sock_FD, buffer);
+        nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *) &client_addr, &client_size);
+        buffer[nbytes] = '\0';
         fprintf(stderr, "Received Message: %s\n", buffer);
 
         sprintf(buffer, "ACK");
         streamLength = strlen(buffer);
+
+        nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *) &client_addr, client_size);
         
-        nbytes = sendMsg(sock_FD, buffer, streamLength);
+        // buffer = sendMsg(sock_FD, buffer, streamLength);
 
         break;
     }

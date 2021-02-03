@@ -9,6 +9,8 @@
 
 #include "LibMB.h"
 
+#define SERVER_IP "127.0.0.1"
+
 int main(int argc, char **argv) {
     int sock_FD;
     char *buffer;
@@ -31,16 +33,23 @@ int main(int argc, char **argv) {
     memset(&server_addr, 0, server_size);
 
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
     server_addr.sin_port = htons(SERVER_PORT);
+
+    nbytes = connect(sock_FD, (struct sockaddr *) &server_addr, server_size); 
+    if (nbytes < 0)
+    {
+        perror("Failure: unable to connect to server");
+        return EXIT_FAILURE;
+    }
 
     sprintf(buffer, "Client-Message :D");
     streamLength = strlen(buffer);
 
     buffer = sendMsg(sock_FD, buffer, streamLength);
+    fprintf(stderr, "Send: %s\n", buffer);
 
     buffer = receiveMsg(sock_FD, buffer);
-
     fprintf(stderr, "Received-Message: %s\n", buffer);
 
     close(sock_FD);
