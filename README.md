@@ -56,6 +56,7 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 - [ ] Lesen aus Dateien
 - [ ] Suchen in Dateien
 - [ ] Bauen von Nachrichten -> PUB/ SUB
+- [ ] Lesen von Verbindungsadresse (Adresse von Subscriber)
 
 <br>
 
