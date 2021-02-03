@@ -51,7 +51,8 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 ### Nützliche Methoden
 
 - [x] Splitten von Messages
-- [x] Senden und Empfangen von Nachrichten
+- [x] Senden und Empfangen von Nachrichten (Client-Seitig)
+- [ ] Senden und Empfangen von Nachrichten (Server-Seitig) - könnte evtl. zu umständlich sein
 - [ ] Beschreiben von Dateien (ohne zu löschen, wie Concat)
 - [ ] Lesen aus Dateien
 - [ ] Suchen in Dateien
