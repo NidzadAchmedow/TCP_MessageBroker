@@ -9,7 +9,7 @@
 
 #include "LibMB.h"
 
-int main()
+int main(int argc, char **argv)
 {
     int sock_FD;
     struct sockaddr_in server_addr, client_addr;
