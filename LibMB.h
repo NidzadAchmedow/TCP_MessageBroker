@@ -28,14 +28,15 @@ char *sendMsg(int sock, char *buffer, int streamLength);
 
 char* receiveMsg(int sock, char *buffer);
 
+int writeFile(int sock, char *fileName, char *content);
 
 
 
-// Not yet decided - in progress
-int getCommand(char *command);
-int writeInFile(int sock, char *fileName, char *content);
-int sendACKMsg(int sock);
-int sendFile(int sock, char *fileName);
+
+// // Not yet decided - in progress
+// int getCommand(char *command);
+// int sendACKMsg(int sock);
+// int sendFile(int sock, char *fileName);
 
 
 

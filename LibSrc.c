@@ -56,3 +56,35 @@ char *receiveMsg(int sock_FD, char *buffer)
     memcpy(buffer, tmp, sizeof(tmp));
     return buffer;
 }
+
+int writeFile(int sock, char *fileName, char *content)
+{
+    int transferedBytes, nbytes;
+    FILE *fileStream;
+
+    // receive content of dstFile and write in file
+    if (fileStream = fopen(fileName, "w"))
+    {
+        while ((nbytes = read(sock, content, sizeof(content))) > 0)
+        {
+            transferedBytes = 0;
+            // errorhandling read
+            if (nbytes < 0)
+            {
+                perror("Failure: unable to receive file for put");
+                return EXIT_FAILURE;
+            }
+            transferedBytes += nbytes;
+            content[nbytes] = '\0';
+            fprintf(fileStream, "%s", content);
+        }
+        fclose(fileStream);
+        fprintf(stderr, "Received file saved in %s\n", fileName);
+        return EXIT_SUCCESS;
+    }
+    else
+    {
+        perror("Failure: unable to open file for put");
+        return EXIT_FAILURE;
+    }
+}
