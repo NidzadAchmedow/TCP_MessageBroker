@@ -30,6 +30,8 @@ char* receiveMsg(int sock, char *buffer);
 
 int writeFile(char *fileName, char *content);
 
+int readFileContent(char *fileName, char **buffer);
+
 
 
 

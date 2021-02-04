@@ -65,7 +65,7 @@ int writeFile(char *fileName, char *content)
     // receive content of dstFile and write in file
     if (fileStream = fopen(fileName, "a"))
     {
-        
+
         fprintf(fileStream, "%s\n", content);
         fclose(fileStream);
         fprintf(stderr, "Wrote message in %s\n", fileName);
@@ -74,6 +74,46 @@ int writeFile(char *fileName, char *content)
     else
     {
         perror("Failure: unable to open file for put");
+        return -1;
+    }
+}
+
+
+
+
+
+
+
+// under construction
+// Todo: how to write file content in a 2 dim array?
+
+// https://stackoverflow.com/questions/2225850/c-c-how-to-copy-a-multidimensional-char-array-without-nested-loops
+int readFileContent(char *fileName, char **buffer)
+{
+    FILE *fileStream;
+    char tmp[25][25];
+    // open file and send its content as msg
+    if (fileStream = fopen(fileName, "r"))
+    {
+        int i = 0;
+        while ((fgets(tmp[i], 25, fileStream)) != NULL)
+        {
+            tmp[i][strlen(tmp[i]) - 1] = '\0';
+            i++;
+        }
+        fclose(fileStream);
+        
+        // pointer error at 7 entries
+        for (int k = 0; k < i; k++) {
+            memcpy(buffer[k], tmp[k], sizeof(tmp[0]));
+            printf("membuf: %s\n",buffer[k]);
+        }
+
+        return i;
+    }
+    else
+    {
+        perror("Failure: unable to open file");
         return -1;
     }
 }
