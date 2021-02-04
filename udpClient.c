@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    sprintf(buffer, "Client-Message :D");
+    sprintf(buffer, "PUB TEMP 15°C");
     streamLength = strlen(buffer);
 
     buffer = sendMsg(sock_FD, buffer, streamLength);

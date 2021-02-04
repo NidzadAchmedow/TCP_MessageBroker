@@ -53,7 +53,7 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 - [x] Splitten von Messages
 - [x] Senden und Empfangen von Nachrichten (Client-Seitig)
 - [ ] Senden und Empfangen von Nachrichten (Server-Seitig) - könnte evtl. zu umständlich sein
-- [ ] Beschreiben von Dateien (ohne zu löschen, wie Concat)
+- [x] Beschreiben von Dateien (ohne zu löschen, wie Concat)
 - [ ] Lesen aus Dateien
 - [ ] Suchen in Dateien
 - [ ] Bauen von Nachrichten -> PUB/ SUB
@@ -68,3 +68,29 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 
 `LibSrc.c`: *(Library Source)*
 - Implementierung der im Header-File enthaltenen Methoden
+
+<br>
+
+* * *
+
+## Ausführungshinweis vom Programm
+
+Terminal-Befehle:
+
+> Object File von Lib-Implementierung:
+
+```
+gcc LibSrc.c -c
+```
+
+> Kompilierung Server:
+
+```
+gcc -o server udpServer.c LibSrc.o -lm -fopenmp
+```
+
+> Kompilierung Client:
+
+```
+gcc -o client udpClient.c LibSrc.o -lm -fopenmp
+```

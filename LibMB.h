@@ -10,7 +10,7 @@
         [programm] [sub/pub] [topic] [msg]
     if less args -> something is not right
 */
-#define ARGS_NUMBER 3
+#define TERMINAL_ARGS_NUMBER 3
 // waiting queue for incoming clients
 #define BACKLOG 5
 // index of SUB or PUB
@@ -28,7 +28,7 @@ char *sendMsg(int sock, char *buffer, int streamLength);
 
 char* receiveMsg(int sock, char *buffer);
 
-int writeFile(int sock, char *fileName, char *content);
+int writeFile(char *fileName, char *content);
 
 
 

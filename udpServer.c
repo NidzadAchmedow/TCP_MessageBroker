@@ -9,14 +9,26 @@
 
 #include "LibMB.h"
 
+#define SUB_PUB_MSG_ARGS 2
+
 int main(int argc, char **argv)
 {
     int sock_FD;
     struct sockaddr_in server_addr, client_addr;
     socklen_t server_size, client_size;
 
+    FILE *fileStream;
+    char *fileName = "Topic.txt";
+
     char *buffer;
     buffer = calloc(BUF_SIZE, sizeof(char));
+
+    // char **splittedMessage;
+    // splittedMessage = calloc(SUB_PUB_MSG_ARGS, sizeof(char));
+    // for (int k = 0; k < SUB_PUB_MSG_ARGS; k++)
+    // {
+    //     splittedMessage[k] = calloc(SUB_PUB_MSG_ARGS, sizeof(char));
+    // }
 
     int nbytes, streamLength;
 
@@ -56,6 +68,9 @@ int main(int argc, char **argv)
         nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *) &client_addr, &client_size);
         buffer[nbytes] = '\0';
         fprintf(stderr, "Received Message: %s\n", buffer);
+
+        int writeCheck = writeFile(fileName, buffer);
+        printf("Write-Check: %d\n", writeCheck);
 
         sprintf(buffer, "ACK");
         streamLength = strlen(buffer);
