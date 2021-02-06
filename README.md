@@ -56,7 +56,7 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 - [x] Beschreiben von Dateien (ohne zu löschen, wie Concat)
 - [x] Lesen aus Dateien und speichern in Array (für Wildcard-Anforderung #)
 - [x] Suchen nach Topic in Datei und Ausgabe von Topic
-- [ ] Bauen von Nachrichten -> PUB/ SUB
+- [x] Bauen von Nachrichten -> PUB/ SUB
 - [ ] Lesen von Verbindungsadresse (Adresse von Subscriber)
 
 <br>
