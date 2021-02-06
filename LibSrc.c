@@ -126,3 +126,13 @@ char *getRequestedTopic(char *nameOfTopic, char *buffer)
     }
     return NULL;
 }
+
+char *buildSubscriberMessage(char *topicToSubscribe, char *buffer) {
+    sprintf(buffer, "SUB %s", topicToSubscribe);
+    return buffer;
+}
+
+char *buildPublisherMessage(char *publish, char *buffer) {
+    sprintf(buffer, "PUB %s", publish);
+    return buffer;
+}

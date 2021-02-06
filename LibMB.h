@@ -35,6 +35,22 @@
 char **splitMessageByWhitespace(char *msg, char **pointer);
 
 /**
+ * Build a message to subscribe a topic.
+ * @param topicToSubscripe  String which describes the requested topic to subscribe
+ * @param buffer            Storage for builded SUB message
+ * @return                  Builded message to subscribe a topic
+*/
+char *buildSubscriberMessage(char *topicToSubscribe, char *buffer);
+
+/**
+ * Build a message to publish a topic.
+ * @param publish   Topic/ data you want to publish
+ * @param buffer    Storage for builded message
+ * @return          Builded message to publish topic
+ */
+char *buildPublisherMessage(char *publish, char *buffer);
+
+/**
  * Client: send a message to server or another client.
  * @param sock          File descriptor of socket
  * @param buffer        Content of message to send

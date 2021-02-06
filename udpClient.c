@@ -11,6 +11,7 @@
 
 #define SERVER_IP "127.0.0.1"
 
+
 int main(int argc, char **argv) {
     int sock_FD;
     char *buffer;
@@ -43,8 +44,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    sprintf(buffer, "PUB TEMP 15°C");
-    streamLength = strlen(buffer);
+    buffer = buildSubscriberMessage("LAMP", buffer);
 
     buffer = sendMsg(sock_FD, buffer, streamLength);
     fprintf(stderr, "Send: %s\n", buffer);
