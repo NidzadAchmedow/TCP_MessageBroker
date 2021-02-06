@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     socklen_t server_size, client_size;
 
     FILE *fileStream;
-    char *fileName = "Topic.txt";
+    char *fileName = FILENAME_FOR_TOPICS;
 
     char *buffer;
     buffer = calloc(BUF_SIZE, sizeof(char));

@@ -20,6 +20,9 @@
 // length of row and collumn of a sub or pub entry
 #define LENGTH_OF_ENTRIES 50
 
+#define FILENAME_FOR_TOPICS "Topic.txt"
+#define FILENAME_SUBSCRIBER "Subscriber.txt"
+
 /*
     Methods ready - will be included
 */

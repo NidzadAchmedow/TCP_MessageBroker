@@ -82,7 +82,6 @@ int readFileContent(char *fileName, char **buffer)
 {
     FILE *fileStream;
     char tmp[LENGTH_OF_ENTRIES][LENGTH_OF_ENTRIES];
-    // open file and send its content as msg
     if (fileStream = fopen(fileName, "r"))
     {
         int fileEntryLength = 0;
@@ -93,9 +92,8 @@ int readFileContent(char *fileName, char **buffer)
         }
         fclose(fileStream);
         
-        // pointer error at 7 entries
-        for (int k = 0; k < fileEntryLength; k++) {
-            memcpy(buffer[k], tmp[k], sizeof(tmp[0]));
+        for (int indexOfBuffer = 0; indexOfBuffer < fileEntryLength; indexOfBuffer++) {
+            memcpy(buffer[indexOfBuffer], tmp[indexOfBuffer], sizeof(tmp[0]));
         }
 
         return fileEntryLength;
