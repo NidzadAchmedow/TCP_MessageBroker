@@ -9,6 +9,7 @@
 
 #include "LibMB.h"
 
+
 int main(int argc, char **argv)
 {
     int sock_FD;
@@ -19,7 +20,7 @@ int main(int argc, char **argv)
     char *fileName = FILENAME_FOR_TOPICS;
 
     char *buffer;
-    buffer = calloc(BUF_SIZE, sizeof(char));
+    buffer = (char *)malloc(BUF_SIZE * sizeof(char));
 
     char **topicMessage;
     topicMessage = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
@@ -62,8 +63,7 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        // buffer = receiveMsg(sock_FD, buffer);
-        nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *) &client_addr, &client_size);
+        nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&client_addr, &client_size);
         buffer[nbytes] = '\0';
         fprintf(stderr, "Received Message: %s\n", buffer);
 
@@ -73,25 +73,27 @@ int main(int argc, char **argv)
         sprintf(buffer, "ACK");
         streamLength = strlen(buffer);
 
-        nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *) &client_addr, client_size);
-        
+        nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
+
         int numberOfEntries = readFileContent(fileName, topicMessage);
-        
+
         fprintf(stderr, "\nContent of: %s\n", fileName);
         for (int indexOfTopic = 0; indexOfTopic < numberOfEntries; indexOfTopic++)
         {
             fprintf(stderr, "%s\n", topicMessage[indexOfTopic]);
         }
 
+        buffer = getRequestedTopic("LAMP", buffer);
+        fprintf(stderr, "Requested Topic: %s\n", buffer);
 
         break;
     }
 
-    free(buffer);
-    // for (int k = 0; k < sizeof(topicMessage[k]); k++)
-    // {
-    //     free(topicMessage[k]);
-    // }
+    // free(buffer);
     free(topicMessage);
+    for (int k = 0; k < sizeof(topicMessage[k]); k++)
+    {
+        free(topicMessage[k]);
+    }
     return EXIT_SUCCESS;
 }

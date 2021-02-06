@@ -45,7 +45,7 @@ int writeFile(char *fileName, char *content);
 */
 int readFileContent(char *fileName, char **buffer);
 
-
+char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
 
 // // Not yet decided - in progress
