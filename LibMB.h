@@ -17,6 +17,8 @@
 #define INDEX_MSG_TYPE 0
 // index of subscriber
 #define SUB_ADDR_INDEX 2
+// length of row and collumn of a sub or pub entry
+#define LENGTH_OF_ENTRIES 50
 
 /*
     Methods ready - will be included
@@ -30,6 +32,14 @@ char* receiveMsg(int sock, char *buffer);
 
 int writeFile(char *fileName, char *content);
 
+/**
+    Read the given file and store the content of the file in buffer.
+    MAX 50 Entries!
+    @param filenName    file to read from
+    @param buffer       pointer to store content of file
+    @return             length of entries 
+    @exception          returns -1 if there is an error
+*/
 int readFileContent(char *fileName, char **buffer);
 
 

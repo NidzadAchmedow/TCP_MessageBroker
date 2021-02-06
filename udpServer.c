@@ -9,8 +9,6 @@
 
 #include "LibMB.h"
 
-#define SUB_PUB_MSG_ARGS 40
-
 int main(int argc, char **argv)
 {
     int sock_FD;
@@ -23,11 +21,11 @@ int main(int argc, char **argv)
     char *buffer;
     buffer = calloc(BUF_SIZE, sizeof(char));
 
-    char **splittedMessage;
-    splittedMessage = calloc(SUB_PUB_MSG_ARGS, sizeof(char));
-    for (int k = 0; k < SUB_PUB_MSG_ARGS; k++)
+    char **topicMessage;
+    topicMessage = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
+    for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
     {
-        splittedMessage[k] = calloc(SUB_PUB_MSG_ARGS, sizeof(char));
+        topicMessage[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
     }
 
     int nbytes, streamLength;
@@ -77,13 +75,12 @@ int main(int argc, char **argv)
 
         nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *) &client_addr, client_size);
         
-        int lineCnt = readFileContent(fileName, splittedMessage);
-        printf("line count: %d\n", lineCnt);
+        int numberOfEntries = readFileContent(fileName, topicMessage);
         
         fprintf(stderr, "\nContent of: %s\n", fileName);
-        for (int i = 0; i < lineCnt; i++)
+        for (int indexOfTopic = 0; indexOfTopic < numberOfEntries; indexOfTopic++)
         {
-            fprintf(stderr, "%s\n", splittedMessage[i]);
+            fprintf(stderr, "%s\n", topicMessage[indexOfTopic]);
         }
 
 
@@ -91,10 +88,10 @@ int main(int argc, char **argv)
     }
 
     free(buffer);
-    // for (int k = 0; k < sizeof(splittedMessage[k]); k++)
+    // for (int k = 0; k < sizeof(topicMessage[k]); k++)
     // {
-    //     free(splittedMessage[k]);
+    //     free(topicMessage[k]);
     // }
-    free(splittedMessage);
+    free(topicMessage);
     return EXIT_SUCCESS;
 }
