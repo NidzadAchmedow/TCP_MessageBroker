@@ -45,6 +45,13 @@ int writeFile(char *fileName, char *content);
 */
 int readFileContent(char *fileName, char **buffer);
 
+/**
+ * Search for specific topic in file and return topic message.
+ * @param nameOfTopic   Topic to search for
+ * @param buffer        Storage for topic message
+ * @return              Topic message
+ * @exception           NULL if topic does not exist
+*/
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
 
