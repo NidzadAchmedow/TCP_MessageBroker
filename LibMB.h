@@ -3,7 +3,9 @@
 
 
 #define SERVER_PORT 8080
+
 #define BUF_SIZE 1024
+
 #define LENGTH_FILE_NAME 255
 /* 
     structure:
@@ -11,12 +13,15 @@
     if less args -> something is not right
 */
 #define TERMINAL_ARGS_NUMBER 3
-// waiting queue for incoming clients
+
 #define BACKLOG 5
+
 // index of SUB or PUB
 #define INDEX_MSG_TYPE 0
+
 // index of subscriber
 #define SUB_ADDR_INDEX 2
+
 // length of row and collumn of a sub or pub entry
 #define LENGTH_OF_ENTRIES 50
 
