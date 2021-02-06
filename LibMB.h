@@ -24,15 +24,37 @@
 #define FILENAME_SUBSCRIBER "Subscriber.txt"
 
 /*
-    Methods ready - will be included
+    Methods ready
 */
 
 char **splitMessageByWhitespace(char *msg, char **pointer);
 
+/**
+ * Client: send a message to server or another client.
+ * @param sock          File descriptor of socket
+ * @param buffer        Content of message to send
+ * @param streamLenght  Length of message
+ * @return              String of send message
+ * @exception           NULL
+*/
 char *sendMsg(int sock, char *buffer, int streamLength);
 
+/**
+ * Client: receive a message from server or another client.
+ * @param sock      File descriptor of socket
+ * @param buffer    Array to store received message
+ * @return          Received message
+ * @exception       NULL
+*/
 char* receiveMsg(int sock, char *buffer);
 
+/**
+ * Write a string in a specific file.
+ * @param fileName      Name of file to write content
+ * @param content       Content to write in file
+ * @return              0 if successful
+ * @exception           -1 if error occurs
+*/
 int writeFile(char *fileName, char *content);
 
 /**
@@ -55,7 +77,7 @@ int readFileContent(char *fileName, char **buffer);
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
 
-// // Not yet decided - in progress
+// --- Not yet decided - in progress ---
 // int getCommand(char *command);
 // int sendACKMsg(int sock);
 // int sendFile(int sock, char *fileName);
