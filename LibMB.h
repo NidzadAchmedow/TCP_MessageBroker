@@ -33,6 +33,13 @@
 */
 
 /**
+ * Check if message is a SUB or PUB request.
+ * @param type  String which includes PUB or SUB
+ * @return      0 for SUB and 1 for PUB
+*/
+int checkMessageType(char *type);
+
+/**
  * Split a message with any given token and store it in a 2 dim. array.
  * @param msgToSplit    String you want to split
  * @param token         Token to split string with

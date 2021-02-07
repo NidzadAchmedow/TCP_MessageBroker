@@ -44,8 +44,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    buffer = buildSubscriberMessage("LAMP-STAMP-RAMP", buffer);
-
+   
     buffer = sendMsg(sock_FD, buffer, streamLength);
     fprintf(stderr, "Send: %s\n", buffer);
 

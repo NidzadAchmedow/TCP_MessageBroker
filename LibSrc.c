@@ -9,7 +9,7 @@
 
 #include "LibMB.h"
 
-// char **splitMessageByToken(char *msgToSplit, char **pointer)
+
 char **splitMessageByToken(char *msgToSplit, char *token, char **splittedMsg)
 {
     char *delimiter = token;
@@ -136,4 +136,14 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer) {
 char *buildPublisherMessage(char *publish, char *buffer) {
     sprintf(buffer, "PUB %s", publish);
     return buffer;
+}
+
+int checkMessageType(char *type) {
+    if (strncmp(type, "SUB", 3) == 0)
+    {
+        return 0;
+    }
+    else {
+        return 1;
+    }
 }
