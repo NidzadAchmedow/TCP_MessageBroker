@@ -63,6 +63,11 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 
 <br>
 
+### Probe-Aufstellung von Server und Client gem. Überlegungen
+
+- [ ] Server
+- [ ] Client
+
 ### Library-Files
 
 `LibMB.h`: *(Library Message Broker)*
