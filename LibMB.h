@@ -32,6 +32,13 @@
     Methods ready
 */
 
+/**
+ * Split a message with any given token and store it in a 2 dim. array.
+ * @param msgToSplit    String you want to split
+ * @param token         Token to split string with
+ * @param splittedMsg   2 dim array to store splitted message
+ * @return              Splitted string as 2 dim array
+*/
 char **splitMessageByToken(char *msgToSplit, char *token, char **splittedMsg);
 
 /**
