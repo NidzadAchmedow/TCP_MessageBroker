@@ -20,7 +20,7 @@
 #define INDEX_MSG_TYPE 0
 
 // index of subscriber
-#define SUB_ADDR_INDEX 2
+#define ADDR_INDEX 1
 
 // length of row and collumn of a sub or pub entry
 #define LENGTH_OF_ENTRIES 50
