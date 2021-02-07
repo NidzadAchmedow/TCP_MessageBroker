@@ -67,24 +67,31 @@ int main(int argc, char **argv)
         buffer[nbytes] = '\0';
         fprintf(stderr, "Received Message: %s\n", buffer);
 
-        int writeCheck = writeFile(fileName, buffer);
-        printf("Write-Check: %d\n", writeCheck);
+        // int writeCheck = writeFile(fileName, buffer);
+        // printf("Write-Check: %d\n", writeCheck);
+
+        topicMessage = splitMessageByToken(buffer, "-", topicMessage);
+
+        for (int i = 0; i < sizeof(topicMessage); i++)
+        {
+            fprintf(stderr, "split[%d]: %s\n", i, topicMessage[i]);
+        }
 
         sprintf(buffer, "ACK");
         streamLength = strlen(buffer);
 
         nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
 
-        int numberOfEntries = readFileContent(fileName, topicMessage);
+        // int numberOfEntries = readFileContent(fileName, topicMessage);
 
-        fprintf(stderr, "\nContent of: %s\n", fileName);
-        for (int indexOfTopic = 0; indexOfTopic < numberOfEntries; indexOfTopic++)
-        {
-            fprintf(stderr, "%s\n", topicMessage[indexOfTopic]);
-        }
+        // fprintf(stderr, "\nContent of: %s\n", fileName);
+        // for (int indexOfTopic = 0; indexOfTopic < numberOfEntries; indexOfTopic++)
+        // {
+        //     fprintf(stderr, "%s\n", topicMessage[indexOfTopic]);
+        // }
 
-        buffer = getRequestedTopic("LAMP", buffer);
-        fprintf(stderr, "Requested Topic: %s\n", buffer);
+        // buffer = getRequestedTopic("LAMP", buffer);
+        // fprintf(stderr, "Requested Topic: %s\n", buffer);
 
         break;
     }

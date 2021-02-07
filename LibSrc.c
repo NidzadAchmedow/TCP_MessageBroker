@@ -9,9 +9,10 @@
 
 #include "LibMB.h"
 
-char **splitMessageByWhitespace(char *msgToSplit, char **pointer)
+// char **splitMessageByToken(char *msgToSplit, char **pointer)
+char **splitMessageByToken(char *msgToSplit, char *token, char **splittedMsg)
 {
-    char delimiter[] = " ";
+    char *delimiter = token;
     char *tmp;
     int iter = 0;
 
@@ -19,12 +20,12 @@ char **splitMessageByWhitespace(char *msgToSplit, char **pointer)
 
     while (tmp != NULL)
     {
-        strcpy(pointer[iter], tmp);
+        strcpy(splittedMsg[iter], tmp);
         tmp = strtok(NULL, delimiter);
         iter++;
     }
     free(tmp);
-    return pointer;
+    return splittedMsg;
 }
 
 char *sendMsg(int sock_FD, char *message, int msgLength)

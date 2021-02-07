@@ -32,7 +32,7 @@
     Methods ready
 */
 
-char **splitMessageByWhitespace(char *msg, char **pointer);
+char **splitMessageByToken(char *msgToSplit, char *token, char **splittedMsg);
 
 /**
  * Build a message to subscribe a topic.
