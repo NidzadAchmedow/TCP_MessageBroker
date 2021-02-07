@@ -57,6 +57,7 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 - [x] Lesen aus Dateien und speichern in Array (für Wildcard-Anforderung #)
 - [x] Suchen nach Topic in Datei und Ausgabe von Topic
 - [x] Bauen von Nachrichten -> PUB/ SUB
+- [x] Split-Funktion -> String mit beliebigen Token splitten
 - [ ] Lesen von Verbindungsadresse (Adresse von Subscriber)
 
 <br>
