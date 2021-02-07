@@ -58,6 +58,7 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 - [x] Suchen nach Topic in Datei und Ausgabe von Topic
 - [x] Bauen von Nachrichten -> PUB/ SUB
 - [x] Split-Funktion -> String mit beliebigen Token splitten
+- [x] Unterscheidung Eingabe Konsole bei Client ob PUB oder SUB erfolgen soll
 - [ ] Lesen von Verbindungsadresse (Adresse von Subscriber)
 
 <br>
