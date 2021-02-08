@@ -1,4 +1,7 @@
 *.o
-server
-client
+bro
+sub
+pub
 *.txt
+client
+server

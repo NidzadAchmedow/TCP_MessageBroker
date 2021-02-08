@@ -5,15 +5,17 @@
 Momentan dient dieses Repo zur hypothetischen Vorbereitung 
 für die kommende TCP/IP Aufgabe zum Message Broker.
 
-## Vorstellung / Umsetzung
+<br>
+
+## Umsetzung
 
 **Server:**
 - verwaltet die Topics, Messages und Subscriber in Files
   - damit ist der Broker *statisch*
 - Server bekommt Nachrichten von Publisher und Subscriber
-  - Publisher: `[PUB TOPIC MSG]`
-  - Subscriber: `[SUB TOPIC ADDR]` 
-- Nachrichten sind durch den Head mit `PUB` und `SUB` eindeutig zuzuordnen
+  - Publisher: `PUB TOPIC MSG`
+  - Subscriber: `SUB TOPIC` 
+- Nachrichten sind durch den Präfix mit `PUB` und `SUB` eindeutig zuzuordnen
   - Inhalt der Nachrichten kann dann in jeweiliges File eingetragen werden
 
 <br>
@@ -46,27 +48,8 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 
 * * *
 
-## Erstellen einer Library
 
-### Nützliche Methoden
 
-- [x] Splitten von Messages
-- [x] Senden und Empfangen von Nachrichten (Client-Seitig)
-- [ ] Senden und Empfangen von Nachrichten (Server-Seitig) - könnte evtl. zu umständlich sein
-- [x] Beschreiben von Dateien (ohne zu löschen, wie Concat)
-- [x] Lesen aus Dateien und speichern in Array (für Wildcard-Anforderung #)
-- [x] Suchen nach Topic in Datei und Ausgabe von Topic
-- [x] Bauen von Nachrichten -> PUB/ SUB
-- [x] Split-Funktion -> String mit beliebigen Token splitten
-- [x] Unterscheidung Eingabe Konsole bei Client ob PUB oder SUB erfolgen soll
-- [ ] Lesen von Verbindungsadresse (Adresse von Subscriber)
-
-<br>
-
-### Probe-Aufstellung von Server und Client gem. Überlegungen
-
-- [ ] Server
-- [ ] Client
 
 ### Library-Files
 
@@ -90,14 +73,20 @@ Terminal-Befehle:
 gcc LibSrc.c -c
 ```
 
-> Kompilierung Server:
+> Kompilierung Broker:
 
 ```
-gcc -o server udpServer.c LibSrc.o -lm -fopenmp
+gcc -o bro smbBroker.c LibSrc.o -lm -fopenmp
 ```
 
-> Kompilierung Client:
+> Kompilierung Subscriber:
 
 ```
-gcc -o client udpClient.c LibSrc.o -lm -fopenmp
+gcc -o sub smbSubscriber.c LibSrc.o -lm -fopenmp
+```
+
+> Kompilierung Publisher:
+
+```
+gcc -o pub smbPublisher.c LibSrc.o -lm -fopenmp
 ```
