@@ -10,8 +10,6 @@
 
 #include "LibMB.h"
 
-#define SERVER_IP "127.0.0.1"
-
 int main(int argc, char **argv)
 {
     // File descriptor for socket
@@ -33,7 +31,7 @@ int main(int argc, char **argv)
     // read from prompt
     if (argc < TERMINAL_ARGS_NUMBER)
     {
-        fprintf(stderr, "Parameters to invoke %s: [hostname] [SUB/PUB] [TOPIC] ([PUB Value])\n", argv[0]);
+        fprintf(stderr, "Parameters to invoke %s: [hostname] [TOPIC] [MESSAGE]\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -76,17 +74,14 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    // check if SUB or PUB + build message
-    if ((checkMessageType(argv[1])) == 0)
-    {
-        buffer = buildSubscriberMessage(argv[3], buffer);
-    }
-    else
-    {
-        char tmp[LENGTH_OF_ENTRIES];
-        sprintf(tmp, "%s %s", argv[3], argv[4]);
-        buffer = buildPublisherMessage(tmp, buffer);
-    }
+    // build message for broker
+    char topic = argv[2];
+    char msg = argv[4];
+    // hier noch splitten
+
+    //sprintf(tmp, "%s %s", argv[3], argv[4]);
+    buffer = buildPublisherMessage(topic, msg, buffer);
+    
 
     // send message
     buffer = sendMsg(sock_FD, buffer, streamLength);

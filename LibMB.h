@@ -19,6 +19,9 @@
 // index of SUB or PUB
 #define INDEX_MSG_TYPE 0
 
+// split token between [TOPIC] [MESSAGE]
+#define PUB_SPLIT_TOKEN "<"
+
 // index of subscriber
 #define ADDR_INDEX 1
 
@@ -58,11 +61,12 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer);
 
 /**
  * Build a message to publish a topic.
- * @param publish   Topic/ data you want to publish
+ * @param topic     Topic you want to publish
+ * @param msg       Message for topic
  * @param buffer    Storage for builded message
  * @return          Builded message to publish topic
  */
-char *buildPublisherMessage(char *publish, char *buffer);
+char *buildPublisherMessage(char *topic, char* msg, char *buffer);
 
 /**
  * Client: send a message to server or another client.
