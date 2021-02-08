@@ -36,6 +36,7 @@
  * Check if message is a SUB or PUB request.
  * @param type  String which includes PUB or SUB
  * @return      0 for SUB and 1 for PUB
+ * @exception   -1 if type is not PUB or SUB
 */
 int checkMessageType(char *type);
 

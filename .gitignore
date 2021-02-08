@@ -5,3 +5,5 @@ pub
 *.txt
 client
 server
+test
+test.c

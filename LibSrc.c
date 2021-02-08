@@ -9,22 +9,24 @@
 
 #include "LibMB.h"
 
-
 char **splitMessageByToken(char *msgToSplit, char *token, char **splittedMsg)
 {
-    char *delimiter = token;
+    char *bufMsg = (char *)malloc(BUF_SIZE * sizeof(char));
+    memcpy(bufMsg, msgToSplit, strlen(msgToSplit));
+
     char *tmp;
     int iter = 0;
 
-    tmp = strtok(msgToSplit, delimiter);
+    tmp = strtok(bufMsg, token);
 
     while (tmp != NULL)
     {
         strcpy(splittedMsg[iter], tmp);
-        tmp = strtok(NULL, delimiter);
+        tmp = strtok(NULL, token);
         iter++;
     }
     free(tmp);
+    free(bufMsg);
     return splittedMsg;
 }
 
@@ -92,8 +94,9 @@ int readFileContent(char *fileName, char **buffer)
             fileEntryLength++;
         }
         fclose(fileStream);
-        
-        for (int indexOfBuffer = 0; indexOfBuffer < fileEntryLength; indexOfBuffer++) {
+
+        for (int indexOfBuffer = 0; indexOfBuffer < fileEntryLength; indexOfBuffer++)
+        {
             memcpy(buffer[indexOfBuffer], tmp[indexOfBuffer], sizeof(tmp[0]));
         }
 
@@ -128,22 +131,46 @@ char *getRequestedTopic(char *nameOfTopic, char *buffer)
     return NULL;
 }
 
-char *buildSubscriberMessage(char *topicToSubscribe, char *buffer) {
+char *buildSubscriberMessage(char *topicToSubscribe, char *buffer)
+{
     sprintf(buffer, "SUB %s", topicToSubscribe);
     return buffer;
 }
 
-char *buildPublisherMessage(char *publish, char *buffer) {
+char *buildPublisherMessage(char *publish, char *buffer)
+{
     sprintf(buffer, "PUB %s", publish);
     return buffer;
 }
 
-int checkMessageType(char *type) {
-    if (strncmp(type, "SUB", 3) == 0)
+int checkMessageType(char *type)
+{
+    char *tmp;
+    tmp = (char *)malloc(BUF_SIZE * sizeof(char));
+
+    char **splittedMsg;
+    splittedMsg = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
+    for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
+    {
+        splittedMsg[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
+    }
+
+    memcpy(tmp, type, strlen(type));
+
+    splittedMsg = splitMessageByToken(tmp, " ", splittedMsg);
+
+    if ((strncmp("SUB", splittedMsg[0], 3)) == 0)
     {
         return 0;
     }
-    else {
+
+    else if ((strncmp("PUB", splittedMsg[0], 3)) == 0)
+    {
         return 1;
+    }
+
+    else
+    {
+        return -1;
     }
 }
