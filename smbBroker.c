@@ -103,12 +103,13 @@ int main(int argc, char **argv)
             // get requested topic
             else
             {
-                // search for requested topic in file an send it to
+                // search for requested topic in file and send it to subscriber
                 buffer = getRequestedTopic(splitBuffer[2], buffer);
                 streamLength = strlen(buffer);
                 nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
             }
         }
+        
         // case: PUB
         else if (checkMessageType(buffer) == 1)
         {
@@ -121,6 +122,7 @@ int main(int argc, char **argv)
         }
     }
 
+    // set allocated storage in broker free
     free(buffer);
     free(topicMessage);
     free(splitBuffer);
