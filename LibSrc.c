@@ -112,20 +112,15 @@ int readFileContent(char *fileName, char **buffer)
 
 char *getRequestedTopic(char *nameOfTopic, char *buffer)
 {
-    char **tmp;
-    tmp = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
-    for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
+    FILE *fileStream;
+    if (fileStream = fopen(FILENAME_FOR_TOPICS, "r"))
     {
-        tmp[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
-    }
-
-    int entryLength = readFileContent(FILENAME_FOR_TOPICS, tmp);
-
-    for (int indexOfBuffer = 0; indexOfBuffer < entryLength; indexOfBuffer++)
-    {
-        if (buffer = strstr(tmp[indexOfBuffer], nameOfTopic))
+        while ((fgets(buffer, BUF_SIZE, fileStream)))
         {
-            return buffer;
+            if ((strncmp(buffer, nameOfTopic, strlen(nameOfTopic))) == 0)
+            {
+                return buffer;
+            }
         }
     }
     return NULL;
@@ -138,7 +133,7 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer)
 }
 
 char *buildPublisherMessage(char *topic, char *msg, char *buffer) {
-    sprintf(buffer, "PUB %s < %s", topic, msg);
+    sprintf(buffer, "PUB %s <%s", topic, msg);
     return buffer;
 }
 

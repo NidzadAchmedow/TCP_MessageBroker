@@ -82,10 +82,12 @@ int main(int argc, char **argv)
 
         // split message in [SUB Topic] and [Message]
         // structure: [sub topic <message] -> [sub topic] [message]
-        splitBuffer = splitMessageByToken(buffer, "<", splitBuffer);
+        splitBuffer = splitMessageByToken(buffer, " ", splitBuffer);
 
         // store [message] of topic in temporary storage
         memcpy(topicMessage, splitBuffer[1], strlen(splitBuffer[1]));
+        streamLength = strlen(splitBuffer[1]);
+        topicMessage[streamLength] = '\0';
 
         // case: SUB
         if (checkMessageType(buffer) == 0)
@@ -104,8 +106,12 @@ int main(int argc, char **argv)
             else
             {
                 // search for requested topic in file and send it to subscriber
-                buffer = getRequestedTopic(splitBuffer[2], buffer);
+                if ((getRequestedTopic(topicMessage, buffer)) == NULL)
+                {
+                    sprintf(buffer, "Topic: [%s] not found!", topicMessage);
+                }
                 streamLength = strlen(buffer);
+                buffer[streamLength] = '\0';
                 nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
             }
         }

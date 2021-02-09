@@ -76,6 +76,7 @@ int main(int argc, char **argv)
 
     //build message
     buffer = buildSubscriberMessage(argv[2], buffer);
+    streamLength = strlen(buffer);
 
     // send message
     nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
