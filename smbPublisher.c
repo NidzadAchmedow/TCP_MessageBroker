@@ -75,20 +75,19 @@ int main(int argc, char **argv)
     }
 
     // build message for broker
-    char topic = argv[2];
-    char msg = argv[4];
-    // hier noch splitten
-
-    //sprintf(tmp, "%s %s", argv[3], argv[4]);
+    char* topic = argv[2];
+    char* msg = argv[4];
+    //sprintf(tmp, "%s %s", argv[3], argv[4]); // Alte version mit einem String
     buffer = buildPublisherMessage(topic, msg, buffer);
-    
 
     // send message
-    buffer = sendMsg(sock_FD, buffer, streamLength);
+    nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
+    //buffer = sendMsg(sock_FD, buffer, streamLength);
     fprintf(stderr, "Send: %s\n", buffer);
 
     // receive message
-    buffer = receiveMsg(sock_FD, buffer);
+    nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, &server_size);
+    //buffer = receiveMsg(sock_FD, buffer);
     fprintf(stderr, "Received-Message: %s\n", buffer);
 
     close(sock_FD);

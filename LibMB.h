@@ -66,7 +66,7 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer);
  * @param buffer    Storage for builded message
  * @return          Builded message to publish topic
  */
-char *buildPublisherMessage(char *topic, char* msg, char *buffer);
+char *buildPublisherMessage(char *topic, char *msg, char *buffer);
 
 /**
  * Client: send a message to server or another client.
