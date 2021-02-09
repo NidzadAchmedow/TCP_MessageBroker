@@ -121,8 +121,8 @@ int main(int argc, char **argv)
         }
     }
 
-    // free(buffer);
-    // free(topicMessage);
+    free(buffer);
+    free(topicMessage);
     free(splitBuffer);
     for (int k = 0; k < sizeof(splitBuffer[k]); k++)
     {
