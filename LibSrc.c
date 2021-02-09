@@ -133,8 +133,8 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer) {
     return buffer;
 }
 
-char *buildPublisherMessage(char *publish, char *buffer) {
-    sprintf(buffer, "PUB %s", publish);
+char *buildPublisherMessage(char *topic, char *msg, char *buffer) {
+    sprintf(buffer, "PUB %s < %s", topic, msg);
     return buffer;
 }
 
