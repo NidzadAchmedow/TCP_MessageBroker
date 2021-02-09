@@ -96,7 +96,7 @@ int main(int argc, char **argv)
                 int numberOfEntries = readFileContent(fileName, splitBuffer);
 
                 buffer = concat2DimArray(splitBuffer, buffer);
-                // ! Issue with sendto -> unable to send buffer
+                streamLength = strlen(buffer);
                 nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
             }
 

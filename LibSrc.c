@@ -181,7 +181,7 @@ char *concat2DimArray(char **arrToConcat, char *storeConcat)
     char *tmp = (char *)malloc(BUF_SIZE * sizeof(char));
 
     memcpy(tmp, storeConcat, strlen(storeConcat));
-    memset(tmp, 0, BUF_SIZE);
+    memset(tmp, 0, strlen(storeConcat));
 
     while (strcmp(arrToConcat[cnt], "") != 0)
     {
@@ -190,5 +190,7 @@ char *concat2DimArray(char **arrToConcat, char *storeConcat)
         cnt++;
     }
 
-    return tmp;
+    memcpy(storeConcat, tmp, strlen(tmp));
+    free(tmp);
+    return storeConcat;
 }
