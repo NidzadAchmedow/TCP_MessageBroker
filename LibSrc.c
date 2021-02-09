@@ -134,7 +134,7 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer) {
 }
 
 char *buildPublisherMessage(char *topic, char *msg, char *buffer) {
-    sprintf(buffer, "PUB %s < %s", topic, msg);
+    sprintf(buffer, "PUB %s <%s", topic, msg);
     return buffer;
 }
 
@@ -163,4 +163,16 @@ int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, 
         return EXIT_SUCCESS;
     }
     return EXIT_FAILURE;
+}
+
+int getDelimiterIndex(char *src[], int size, const char *delimiter) 
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (!(strcmp(src[i], delimiter)))
+        {
+            return i;
+        }
+    }
+    return -1;
 }

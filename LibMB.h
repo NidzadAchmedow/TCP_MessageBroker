@@ -13,6 +13,8 @@
     if less args -> something is not right
 */
 #define TERMINAL_ARGS_NUMBER 3
+#define PUBLISHER_ARGS_NUMBER 5
+#define TOPIC_START_INDEX 2
 
 #define BACKLOG 5
 
@@ -118,16 +120,25 @@ int readFileContent(char *fileName, char **buffer);
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
 /**
- * Concatenates array of Strings (Call by reference)
+ * Concatenates array of Strings
  * @param src Array of Strings to concatenate
  * @param dest String to fill
- * @param start Starting index of src
- * @param end End index of src
+ * @param start Starting index of src (will be included)
+ * @param end End index of src (will not be included)
  * @param size Elements in src
  * @param delimiter String to put between elements in dest
  * @return 0 = Success / 1 = Failure
  */
 int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, const char *delimiter);
+
+/**
+ * Returns index of first occurrence of delimiter inside of array
+ * @param src Array to search in
+ * @param size Size of array to search in
+ * @param delimiter String to search for
+ * @return Index if successful, else -1 
+ */
+int getDelimiterIndex(char *src[], int size, const char *delimiter);
 
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);
