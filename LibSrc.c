@@ -137,9 +137,8 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer)
     return buffer;
 }
 
-char *buildPublisherMessage(char *publish, char *buffer)
-{
-    sprintf(buffer, "PUB %s", publish);
+char *buildPublisherMessage(char *topic, char *msg, char *buffer) {
+    sprintf(buffer, "PUB %s < %s", topic, msg);
     return buffer;
 }
 
@@ -193,4 +192,21 @@ char *concat2DimArray(char **arrToConcat, char *storeConcat)
     memcpy(storeConcat, tmp, strlen(tmp));
     free(tmp);
     return storeConcat;
+}
+
+int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, const char *delimiter)
+{
+    if (!(start > end || end > size))
+    {
+        dest[0] = '\0'; // leert String
+        for (int i = start; i < end; i++) {
+            if ((strlen(dest) + strlen(src[i])) < MAX_STRING_SIZE) // check if max size has been reached
+            {
+                if (i > start) strcat(dest, delimiter); // add delimiter if beyond first string
+                strcat(dest, src[i]);
+            }
+        }
+        return EXIT_SUCCESS;
+    }
+    return EXIT_FAILURE;
 }

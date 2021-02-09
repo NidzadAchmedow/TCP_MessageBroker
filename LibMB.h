@@ -19,6 +19,11 @@
 // index of SUB or PUB
 #define INDEX_MSG_TYPE 0
 
+// split token between [TOPIC] [MESSAGE]
+#define PUB_SPLIT_TOKEN "<"
+
+#define MAX_STRING_SIZE 255
+
 // index of subscriber
 #define ADDR_INDEX 1
 
@@ -59,11 +64,12 @@ char *buildSubscriberMessage(char *topicToSubscribe, char *buffer);
 
 /**
  * Build a message to publish a topic.
- * @param publish   Topic/ data you want to publish
+ * @param topic     Topic you want to publish
+ * @param msg       Message for topic
  * @param buffer    Storage for builded message
  * @return          Builded message to publish topic
  */
-char *buildPublisherMessage(char *publish, char *buffer);
+char *buildPublisherMessage(char *topic, char *msg, char *buffer);
 
 /**
  * Client: send a message to server or another client.
@@ -120,12 +126,22 @@ char *getRequestedTopic(char *nameOfTopic, char *buffer);
 */
 char *concat2DimArray(char **arrToConcat, char *storeConcat);
 
+/**
+ * Concatenates array of Strings (Call by reference)
+ * @param src Array of Strings to concatenate
+ * @param dest String to fill
+ * @param start Starting index of src
+ * @param end End index of src
+ * @param size Elements in src
+ * @param delimiter String to put between elements in dest
+ * @return 0 = Success / 1 = Failure
+ */
+int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, const char *delimiter);
 
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);
 // int sendACKMsg(int sock);
 // int sendFile(int sock, char *fileName);
-
 
 
 #endif

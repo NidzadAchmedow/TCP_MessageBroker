@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     // read from prompt
     if (argc < TERMINAL_ARGS_NUMBER)
     {
-        fprintf(stderr, "Parameters to invoke %s: [hostname] [TOPIC]\n", argv[0]);
+        fprintf(stderr, "Parameters to invoke %s: [hostname] [TOPIC] [MESSAGE]\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -74,8 +74,11 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    //build message
-    buffer = buildSubscriberMessage(argv[2], buffer);
+    // build message for broker
+    char* topic = argv[2];
+    char* msg = argv[4];
+    //sprintf(tmp, "%s %s", argv[3], argv[4]); // Alte version mit einem String
+    buffer = buildPublisherMessage(topic, msg, buffer);
 
     // send message
     nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
@@ -90,6 +93,7 @@ int main(int argc, char **argv)
     close(sock_FD);
     return EXIT_SUCCESS;
 }
+
 
 /*
     Source:
