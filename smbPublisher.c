@@ -79,7 +79,7 @@ int main(int argc, char **argv)
     char* msg = argv[4];
     //sprintf(tmp, "%s %s", argv[3], argv[4]); // Alte version mit einem String
     buffer = buildPublisherMessage(topic, msg, buffer);
-
+    streamLength = strlen(buffer);
     // send message
     nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
     //buffer = sendMsg(sock_FD, buffer, streamLength);

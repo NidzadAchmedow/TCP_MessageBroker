@@ -9,7 +9,6 @@
 
 #include "LibMB.h"
 
-
 int main(int argc, char **argv)
 {
     // File descriptor for socket
@@ -80,18 +79,18 @@ int main(int argc, char **argv)
         buffer[nbytes] = '\0';
         fprintf(stderr, "Received Message: %s\n", buffer);
 
-        // split message in [SUB Topic] and [Message]
-        // structure: [sub topic <message] -> [sub topic] [message]
-        splitBuffer = splitMessageByToken(buffer, " ", splitBuffer);
-
-        // store [message] of topic in temporary storage
-        memcpy(topicMessage, splitBuffer[1], strlen(splitBuffer[1]));
-        streamLength = strlen(splitBuffer[1]);
-        topicMessage[streamLength] = '\0';
-
         // case: SUB
         if (checkMessageType(buffer) == 0)
         {
+            // split SUB message in parts
+            // structure: [sub topic] -> [sub] [topic]
+            splitBuffer = splitMessageByToken(buffer, " ", splitBuffer);
+
+            // store [message] of topic in temporary storage
+            memcpy(topicMessage, splitBuffer[1], strlen(splitBuffer[1]));
+            streamLength = strlen(splitBuffer[1]);
+            topicMessage[streamLength] = '\0';
+
             // check if wildecard is requested
             if (strcmp("#", topicMessage) == 0)
             {
@@ -115,14 +114,25 @@ int main(int argc, char **argv)
                 nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
             }
         }
-        
+
         // case: PUB
         else if (checkMessageType(buffer) == 1)
         {
-            /* assume pub message structure: PUB topic <msg */
-            // build topic to save in file -> [topic] [message]
+            // split message in [PUB Topic] and [Message]
+            // structure: [pub topic <message] -> [sub topic] [message]
+            splitBuffer = splitMessageByToken(buffer, PUB_SPLIT_TOKEN, splitBuffer);
+
+            // store [message] of topic in topicMessage storage
+            memcpy(topicMessage, splitBuffer[1], strlen(splitBuffer[1]));
+            streamLength = strlen(splitBuffer[1]);
+            topicMessage[streamLength] = '\0';
+
+            // build topic string [TOPIC MESSAGE] to save in "Topic.txt"
             splitBuffer = splitMessageByToken(buffer, " ", splitBuffer);
             sprintf(buffer, "%s %s", splitBuffer[1], topicMessage);
+            
+            printf("publish build string: %s\n", buffer);
+
             int writeCheck = writeFile(fileName, buffer);
             printf("Write-Check -> 0 (successful): %d\n", writeCheck);
         }
