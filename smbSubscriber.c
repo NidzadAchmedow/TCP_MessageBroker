@@ -75,7 +75,10 @@ int main(int argc, char **argv)
     }
 
     //build message
-    buffer = buildSubscriberMessage(argv[2], buffer);
+    char requestedTopic[MAX_STRING_SIZE];
+    concatArrayOfStrings(argv, requestedTopic, TOPIC_START_INDEX, argc, argc, " ");
+
+    buffer = buildSubscriberMessage(requestedTopic, buffer);
 
     // send message
     nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
