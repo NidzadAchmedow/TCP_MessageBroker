@@ -78,11 +78,13 @@ int main(int argc, char **argv)
     buffer = buildSubscriberMessage(argv[2], buffer);
 
     // send message
-    buffer = sendMsg(sock_FD, buffer, streamLength);
+    nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
+    //buffer = sendMsg(sock_FD, buffer, streamLength);
     fprintf(stderr, "Send: %s\n", buffer);
 
     // receive message
-    buffer = receiveMsg(sock_FD, buffer);
+    nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, &server_size);
+    //buffer = receiveMsg(sock_FD, buffer);
     fprintf(stderr, "Received-Message: %s\n", buffer);
 
     close(sock_FD);
