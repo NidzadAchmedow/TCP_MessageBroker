@@ -22,6 +22,8 @@
 // split token between [TOPIC] [MESSAGE]
 #define PUB_SPLIT_TOKEN "<"
 
+#define MAX_STRING_SIZE 255
+
 // index of subscriber
 #define ADDR_INDEX 1
 
@@ -115,12 +117,22 @@ int readFileContent(char *fileName, char **buffer);
 */
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
+/**
+ * Concatenates array of Strings (Call by reference)
+ * @param src Array of Strings to concatenate
+ * @param dest String to fill
+ * @param start Starting index of src
+ * @param end End index of src
+ * @param size Elements in src
+ * @param delimiter String to put between elements in dest
+ * @return 0 = Success / 1 = Failure
+ */
+int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, const char *delimiter);
 
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);
 // int sendACKMsg(int sock);
 // int sendFile(int sock, char *fileName);
-
 
 
 #endif
