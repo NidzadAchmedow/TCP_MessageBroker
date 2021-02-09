@@ -21,7 +21,8 @@ int main(int argc, char **argv)
 
     // check-values
     int nbytes, streamLength;
-
+    int indexOfDelimiter = getDelimiterIndex(argv, argc, PUB_SPLIT_TOKEN);
+    
     // server address variables
     struct sockaddr_in server_addr;
     socklen_t server_size;
@@ -29,9 +30,9 @@ int main(int argc, char **argv)
     char *hostName = NULL;
 
     // read from prompt
-    if (argc < TERMINAL_ARGS_NUMBER)
+    if (argc < PUBLISHER_ARGS_NUMBER || indexOfDelimiter < TOPIC_START_INDEX)
     {
-        fprintf(stderr, "Parameters to invoke %s: [hostname] [TOPIC] [MESSAGE]\n", argv[0]);
+        fprintf(stderr, "Parameters to invoke %s: [hostname] [TOPIC] < [MESSAGE]\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -75,9 +76,12 @@ int main(int argc, char **argv)
     }
 
     // build message for broker
-    char* topic = argv[2];
-    char* msg = argv[4];
-    //sprintf(tmp, "%s %s", argv[3], argv[4]); // Alte version mit einem String
+    char topic[MAX_STRING_SIZE];
+    concatArrayOfStrings(argv, topic, TOPIC_START_INDEX, indexOfDelimiter, argc, " ");
+
+    char msg[MAX_STRING_SIZE];
+    concatArrayOfStrings(argv, msg, (indexOfDelimiter + 1), argc, argc, " ");
+
     buffer = buildPublisherMessage(topic, msg, buffer);
 
     // send message
