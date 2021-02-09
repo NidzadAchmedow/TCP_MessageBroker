@@ -94,6 +94,7 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
+
 /*
     Source:
         https://www.geeksforgeeks.org/udp-server-client-implementation-c/
