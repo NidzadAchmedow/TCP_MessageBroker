@@ -205,3 +205,15 @@ int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, 
     }
     return EXIT_FAILURE;
 }
+
+int getDelimiterIndex(char *src[], int size, const char *delimiter) 
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (!(strcmp(src[i], delimiter)))
+        {
+            return i;
+        }
+    }
+    return -1;
+}
