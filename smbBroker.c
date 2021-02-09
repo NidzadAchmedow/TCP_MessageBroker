@@ -9,6 +9,7 @@
 
 #include "LibMB.h"
 
+
 int main(int argc, char **argv)
 {
     // File descriptor for socket
@@ -25,15 +26,15 @@ int main(int argc, char **argv)
     // Storage for oneline string messages + tempoaray storage
     char *buffer;
     buffer = (char *)malloc(BUF_SIZE * sizeof(char));
-    char *tmpStorage;
-    tmpStorage = (char *)malloc(BUF_SIZE * sizeof(char));
+    char *topicMessage;
+    topicMessage = (char *)malloc(BUF_SIZE * sizeof(char));
 
     // 2 dim array to store whole topics from file -> usecase: # (wildcard)
-    char **topicMessage;
-    topicMessage = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
+    char **splitBuffer;
+    splitBuffer = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
     for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
     {
-        topicMessage[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
+        splitBuffer[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
     }
 
     // check values to test size of messages and buffer length
@@ -81,28 +82,29 @@ int main(int argc, char **argv)
 
         // split message in [SUB Topic] and [Message]
         // structure: [sub topic <message] -> [sub topic] [message]
-        topicMessage = splitMessageByToken(buffer, "<", topicMessage);
+        splitBuffer = splitMessageByToken(buffer, "<", splitBuffer);
 
         // store [message] of topic in temporary storage
-        memcpy(tmpStorage, topicMessage[1], strlen(topicMessage[1]));
+        memcpy(topicMessage, splitBuffer[1], strlen(splitBuffer[1]));
 
         // case: SUB
         if (checkMessageType(buffer) == 0)
         {
             // check if wildecard is requested
-            if (strcmp("#", topicMessage[1]) == 0)
+            if (strcmp("#", topicMessage) == 0)
             {
-                int numberOfEntries = readFileContent(fileName, topicMessage);
+                int numberOfEntries = readFileContent(fileName, splitBuffer);
 
-                // ! Issue with sendto -> sending topicMessage as 2 dim array
-                nbytes = sendto(sock_FD, topicMessage, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
+                buffer = concat2DimArray(splitBuffer, buffer);
+                // ! Issue with sendto -> unable to send buffer
+                nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
             }
 
             // get requested topic
             else
             {
                 // search for requested topic in file an send it to
-                buffer = getRequestedTopic(topicMessage[1], buffer);
+                buffer = getRequestedTopic(splitBuffer[2], buffer);
                 streamLength = strlen(buffer);
                 nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&client_addr, client_size);
             }
@@ -111,21 +113,20 @@ int main(int argc, char **argv)
         else if (checkMessageType(buffer) == 1)
         {
             /* assume pub message structure: PUB topic <msg */
-
             // build topic to save in file -> [topic] [message]
-            // ! write in file not correct - check here
-            sprintf(buffer, "%s %s", topicMessage[1], tmpStorage);
+            splitBuffer = splitMessageByToken(buffer, " ", splitBuffer);
+            sprintf(buffer, "%s %s", splitBuffer[1], topicMessage);
             int writeCheck = writeFile(fileName, buffer);
             printf("Write-Check -> 0 (successful): %d\n", writeCheck);
         }
     }
 
     // free(buffer);
-    // free(tmpStorage);
-    free(topicMessage);
-    for (int k = 0; k < sizeof(topicMessage[k]); k++)
+    // free(topicMessage);
+    free(splitBuffer);
+    for (int k = 0; k < sizeof(splitBuffer[k]); k++)
     {
-        free(topicMessage[k]);
+        free(splitBuffer[k]);
     }
     return EXIT_SUCCESS;
 }

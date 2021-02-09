@@ -112,6 +112,14 @@ int readFileContent(char *fileName, char **buffer);
 */
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
+/**
+ * Concatenate content in 2 dim array to a 1 dim array.
+ * @param arrToConcat       2 dim array with content to concatenate
+ * @param storeConcat       1 dim array to store content of arrToConcat
+ * @return                  storeConcat with content of arrToConcat
+*/
+char *concat2DimArray(char **arrToConcat, char *storeConcat);
+
 
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);

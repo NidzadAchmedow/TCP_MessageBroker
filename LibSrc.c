@@ -174,3 +174,21 @@ int checkMessageType(char *type)
         return -1;
     }
 }
+
+char *concat2DimArray(char **arrToConcat, char *storeConcat)
+{
+    int cnt = 0;
+    char *tmp = (char *)malloc(BUF_SIZE * sizeof(char));
+
+    memcpy(tmp, storeConcat, strlen(storeConcat));
+    memset(tmp, 0, BUF_SIZE);
+
+    while (strcmp(arrToConcat[cnt], "") != 0)
+    {
+        strcat(tmp, arrToConcat[cnt]);
+        strcat(tmp, "\n");
+        cnt++;
+    }
+
+    return tmp;
+}
