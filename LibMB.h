@@ -149,6 +149,13 @@ int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, 
  */
 int getDelimiterIndex(char *src[], int size, const char *delimiter);
 
+/**
+ * Function to get user input inside argument
+ * @param dest String for input
+ * @return 0 if successful, else 1
+ */
+int getUserInput(char *dest);
+
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);
 // int sendACKMsg(int sock);
