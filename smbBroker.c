@@ -27,6 +27,8 @@ int main(int argc, char **argv)
     buffer = (char *)malloc(BUF_SIZE * sizeof(char));
     char *topicMessage;
     topicMessage = (char *)malloc(BUF_SIZE * sizeof(char));
+    char *topicPrefix;
+    topicPrefix = (char *)malloc(BUF_SIZE * sizeof(char));
 
     // 2 dim array to store whole topics from file -> usecase: # (wildcard)
     char **splitBuffer;
@@ -120,7 +122,7 @@ int main(int argc, char **argv)
         else if (checkMessageType(buffer) == 1)
         {
             // split message in [PUB Topic] and [Message]
-            // structure: [pub topic <message] -> [sub topic] [message]
+            // structure: [pub topic < message] -> [sub topic] [message]
             splitBuffer = splitMessageByToken(buffer, PUB_SPLIT_TOKEN, splitBuffer);
 
             // store [message] of topic in topicMessage storage
@@ -129,8 +131,8 @@ int main(int argc, char **argv)
             topicMessage[streamLength] = '\0';
 
             // build topic string [TOPIC MESSAGE] to save in "Topic.txt"
-            splitBuffer = splitMessageByToken(buffer, " ", splitBuffer);
-            sprintf(buffer, "%s %s", splitBuffer[1], topicMessage);
+            topicPrefix = incomingMessagePrefixHandler(buffer);
+            sprintf(buffer, "%s %s", topicPrefix, topicMessage);
             
             printf("publish build string: %s\n", buffer);
 
@@ -142,6 +144,7 @@ int main(int argc, char **argv)
     // set allocated storage in broker free
     free(buffer);
     free(topicMessage);
+    free(topicPrefix);
     free(splitBuffer);
     for (int k = 0; k < sizeof(splitBuffer[k]); k++)
     {
