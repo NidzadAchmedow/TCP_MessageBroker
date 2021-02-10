@@ -9,22 +9,24 @@
 
 #include "LibMB.h"
 
-
 char **splitMessageByToken(char *msgToSplit, char *token, char **splittedMsg)
 {
-    char *delimiter = token;
+    char *bufMsg = (char *)malloc(BUF_SIZE * sizeof(char));
+    memcpy(bufMsg, msgToSplit, strlen(msgToSplit));
+
     char *tmp;
     int iter = 0;
 
-    tmp = strtok(msgToSplit, delimiter);
+    tmp = strtok(bufMsg, token);
 
     while (tmp != NULL)
     {
         strcpy(splittedMsg[iter], tmp);
-        tmp = strtok(NULL, delimiter);
+        tmp = strtok(NULL, token);
         iter++;
     }
     free(tmp);
+    free(bufMsg);
     return splittedMsg;
 }
 
@@ -92,8 +94,9 @@ int readFileContent(char *fileName, char **buffer)
             fileEntryLength++;
         }
         fclose(fileStream);
-        
-        for (int indexOfBuffer = 0; indexOfBuffer < fileEntryLength; indexOfBuffer++) {
+
+        for (int indexOfBuffer = 0; indexOfBuffer < fileEntryLength; indexOfBuffer++)
+        {
             memcpy(buffer[indexOfBuffer], tmp[indexOfBuffer], sizeof(tmp[0]));
         }
 
@@ -109,43 +112,81 @@ int readFileContent(char *fileName, char **buffer)
 
 char *getRequestedTopic(char *nameOfTopic, char *buffer)
 {
-    char **tmp;
-    tmp = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
-    for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
+    FILE *fileStream;
+    if (fileStream = fopen(FILENAME_FOR_TOPICS, "r"))
     {
-        tmp[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
-    }
-
-    int entryLength = readFileContent(FILENAME_FOR_TOPICS, tmp);
-
-    for (int indexOfBuffer = 0; indexOfBuffer < entryLength; indexOfBuffer++)
-    {
-        if (buffer = strstr(tmp[indexOfBuffer], nameOfTopic))
+        while ((fgets(buffer, BUF_SIZE, fileStream)))
         {
-            return buffer;
+            if ((strncmp(buffer, nameOfTopic, strlen(nameOfTopic))) == 0)
+            {
+                return buffer;
+            }
         }
     }
     return NULL;
 }
 
-char *buildSubscriberMessage(char *topicToSubscribe, char *buffer) {
+char *buildSubscriberMessage(char *topicToSubscribe, char *buffer)
+{
     sprintf(buffer, "SUB %s", topicToSubscribe);
     return buffer;
 }
 
 char *buildPublisherMessage(char *topic, char *msg, char *buffer) {
-    sprintf(buffer, "PUB %s <%s", topic, msg);
+    sprintf(buffer, "PUB %s < %s", topic, msg);
     return buffer;
 }
 
-int checkMessageType(char *type) {
-    if (strncmp(type, "SUB", 3) == 0)
+int checkMessageType(char *type)
+{
+    char *tmp;
+    tmp = (char *)malloc(BUF_SIZE * sizeof(char));
+
+    char **splittedMsg;
+    splittedMsg = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
+    for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
+    {
+        splittedMsg[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
+    }
+
+    memcpy(tmp, type, strlen(type));
+
+    splittedMsg = splitMessageByToken(tmp, " ", splittedMsg);
+
+    if ((strncmp("SUB", splittedMsg[0], 3)) == 0)
     {
         return 0;
     }
-    else {
+
+    else if ((strncmp("PUB", splittedMsg[0], 3)) == 0)
+    {
         return 1;
     }
+
+    else
+    {
+        return -1;
+    }
+}
+
+char *concat2DimArray(char **arrToConcat, char *storeConcat)
+{
+    int cnt = 0;
+    char *tmp = (char *)malloc(BUF_SIZE * sizeof(char));
+
+    memcpy(tmp, storeConcat, strlen(storeConcat));
+    memset(tmp, 0, strlen(storeConcat));
+
+    while (strcmp(arrToConcat[cnt], "") != 0)
+    {
+        strcat(tmp, arrToConcat[cnt]);
+        strcat(tmp, "\n");
+        cnt++;
+    }
+
+    memcpy(storeConcat, tmp, strlen(tmp));
+    free(tmp);
+    return storeConcat;
 }
 
 int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, const char *delimiter)
@@ -175,4 +216,16 @@ int getDelimiterIndex(char *src[], int size, const char *delimiter)
         }
     }
     return -1;
+}
+
+int getUserInput(char *dest) 
+{
+    dest[0] = '\0';
+    fprintf(stderr, "$ "); // to signal user input
+    if(fgets(dest, MAX_STRING_SIZE, stdin))
+    {
+        dest[strlen(dest) -1] = '\0'; // remove new line character at the end
+        return EXIT_SUCCESS;    
+    }
+    return EXIT_FAILURE;
 }

@@ -9,11 +9,33 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 
 ## Umsetzung
 
-**Server:**
+**Subscriber:**
+- Kann ein Topic vom Broker anfragen und bekommt eine oder mehrere Antworten
+  - Topic kann mehrere Wörter enthalten
+- Eingabe um Subscriber erfolgreich zu benutzen :
+```
+./sub hostname topic
+```
+- Wildcard bietet Möglichkeit jedes Topic zu abonnieren :
+```
+./sub hostname "#"
+```
+
+**Publisher:**
+- Kann dem Broker unter einem bestimmten Topic eine Message übermitteln
+  - Topic sowie Message können mehrere Wörter enthalten
+- Eingabe um Publisher erfolgreich zu benutzen :
+```
+./pub hostname topic "<" message
+```
+
+<br>
+
+**Broker:**
 - verwaltet die Topics, Messages und Subscriber in Files
   - damit ist der Broker *statisch*
 - Server bekommt Nachrichten von Publisher und Subscriber
-  - Publisher: `PUB TOPIC MSG`
+  - Publisher: `PUB TOPIC <MSG`
   - Subscriber: `SUB TOPIC` 
 - Nachrichten sind durch den Präfix mit `PUB` und `SUB` eindeutig zuzuordnen
   - Inhalt der Nachrichten kann dann in jeweiliges File eingetragen werden

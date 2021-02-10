@@ -43,6 +43,7 @@
  * Check if message is a SUB or PUB request.
  * @param type  String which includes PUB or SUB
  * @return      0 for SUB and 1 for PUB
+ * @exception   -1 if type is not PUB or SUB
 */
 int checkMessageType(char *type);
 
@@ -120,6 +121,14 @@ int readFileContent(char *fileName, char **buffer);
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
 /**
+ * Concatenate content in 2 dim array to a 1 dim array.
+ * @param arrToConcat       2 dim array with content to concatenate
+ * @param storeConcat       1 dim array to store content of arrToConcat
+ * @return                  storeConcat with content of arrToConcat
+*/
+char *concat2DimArray(char **arrToConcat, char *storeConcat);
+
+/**
  * Concatenates array of Strings
  * @param src Array of Strings to concatenate
  * @param dest String to fill
@@ -139,6 +148,13 @@ int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, 
  * @return Index if successful, else -1 
  */
 int getDelimiterIndex(char *src[], int size, const char *delimiter);
+
+/**
+ * Function to get user input inside argument
+ * @param dest String for input
+ * @return 0 if successful, else 1
+ */
+int getUserInput(char *dest);
 
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);
