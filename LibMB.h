@@ -43,6 +43,7 @@
  * Check if message is a SUB or PUB request.
  * @param type  String which includes PUB or SUB
  * @return      0 for SUB and 1 for PUB
+ * @exception   -1 if type is not PUB or SUB
 */
 int checkMessageType(char *type);
 
@@ -118,6 +119,14 @@ int readFileContent(char *fileName, char **buffer);
  * @exception           NULL if topic does not exist
 */
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
+
+/**
+ * Concatenate content in 2 dim array to a 1 dim array.
+ * @param arrToConcat       2 dim array with content to concatenate
+ * @param storeConcat       1 dim array to store content of arrToConcat
+ * @return                  storeConcat with content of arrToConcat
+*/
+char *concat2DimArray(char **arrToConcat, char *storeConcat);
 
 /**
  * Concatenates array of Strings

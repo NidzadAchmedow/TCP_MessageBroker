@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     concatArrayOfStrings(argv, msg, (indexOfDelimiter + 1), argc, argc, " ");
 
     buffer = buildPublisherMessage(topic, msg, buffer);
-
+    streamLength = strlen(buffer);
     // send message
     nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
     //buffer = sendMsg(sock_FD, buffer, streamLength);
