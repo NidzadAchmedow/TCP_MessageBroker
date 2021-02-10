@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     // check-values
     int nbytes, streamLength;
     int indexOfDelimiter = getDelimiterIndex(argv, argc, PUB_SPLIT_TOKEN);
-    
+
     // server address variables
     struct sockaddr_in server_addr;
     socklen_t server_size;
@@ -90,14 +90,13 @@ int main(int argc, char **argv)
     fprintf(stderr, "Send: %s\n", buffer);
 
     // receive message
-    nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, &server_size);
+    // nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, &server_size);
     //buffer = receiveMsg(sock_FD, buffer);
-    fprintf(stderr, "Received-Message: %s\n", buffer);
+    // fprintf(stderr, "Received-Message: %s\n", buffer);
 
     close(sock_FD);
     return EXIT_SUCCESS;
 }
-
 
 /*
     Source:

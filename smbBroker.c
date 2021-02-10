@@ -77,6 +77,7 @@ int main(int argc, char **argv)
     {
         nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&client_addr, &client_size);
         buffer[nbytes] = '\0';
+        fprintf(stderr, "Client Addr: %s\n", inet_ntoa(client_addr.sin_addr)); // get client addr
         fprintf(stderr, "Received Message: %s\n", buffer);
 
         // case: SUB
