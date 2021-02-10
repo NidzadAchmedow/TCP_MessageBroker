@@ -90,7 +90,7 @@ int main(int argc, char **argv)
             int invalidInput = 1;
             while (invalidInput)
             {
-                fprintf(stderr, "You're currently in client mode!\nType one of the following options to continue :\n%s\n%s\n", options[0], options[1]);
+                fprintf(stderr, "You're currently in publisher client mode!\nType one of the following options to continue :\n%s\n%s\n", options[0], options[1]);
                 if(getUserInput(optionInput))
                 {
                     fprintf(stderr, "Something went wrong..\n\n");
