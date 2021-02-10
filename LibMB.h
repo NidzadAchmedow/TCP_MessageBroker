@@ -149,6 +149,14 @@ int concatArrayOfStrings(char *src[], char *dest, int start, int end, int size, 
  */
 int getDelimiterIndex(char *src[], int size, const char *delimiter);
 
+/**
+ * To handle a incoming message which contains spaces -> [pub topic name with spaces < message]
+ * and build a string which only contains topic name -> [topic name with spaces]
+ * @param message       incoming message from publisher
+ * @return              topic name with spaces
+*/
+char *incomingMessagePrefixHandler(char *message);
+
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);
 // int sendACKMsg(int sock);

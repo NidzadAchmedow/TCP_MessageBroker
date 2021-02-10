@@ -217,3 +217,36 @@ int getDelimiterIndex(char *src[], int size, const char *delimiter)
     }
     return -1;
 }
+
+char *incomingMessagePrefixHandler(char *message){
+    char **tmpSplitMsg;
+    tmpSplitMsg = (char **)malloc(LENGTH_OF_ENTRIES * sizeof(char *));
+    for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
+    {
+        tmpSplitMsg[k] = (char *)malloc(LENGTH_OF_ENTRIES * sizeof(char));
+    }
+
+    // make storage empty
+    for (int k = 0; k < LENGTH_OF_ENTRIES; k++)
+    {
+        memset(tmpSplitMsg[k], 0, sizeof(tmpSplitMsg));
+    }
+
+    tmpSplitMsg = splitMessageByToken(message, PUB_SPLIT_TOKEN, tmpSplitMsg);
+    tmpSplitMsg = splitMessageByToken(tmpSplitMsg[0], " ", tmpSplitMsg);
+    
+    // beginn index 1 because index 0 is PUB which is not needed
+    int splitIndex = 1;
+
+    // empty message to concat prefix in loop
+    memset(message, 0, sizeof(message));
+
+    // loop to concat topic
+    while ((strcmp(tmpSplitMsg[splitIndex], "")) != 0)
+    {
+        strcat(message, tmpSplitMsg[splitIndex]);
+        strcat(message, " ");
+        splitIndex++;
+    }
+    return message;
+}
