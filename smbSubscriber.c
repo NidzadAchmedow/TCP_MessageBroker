@@ -21,6 +21,7 @@ int main(int argc, char **argv)
 
     // check-values
     int nbytes, streamLength;
+    int runs = 1;
 
     // server address variables
     struct sockaddr_in server_addr;
@@ -29,9 +30,9 @@ int main(int argc, char **argv)
     char *hostName = NULL;
 
     // read from prompt
-    if (argc < TERMINAL_ARGS_NUMBER)
+    if (argc < 2)
     {
-        fprintf(stderr, "Parameters to invoke %s: [hostname] [TOPIC]\n", argv[0]);
+        fprintf(stderr, "Parameters to invoke %s: hostname [TOPIC]\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -39,7 +40,7 @@ int main(int argc, char **argv)
     hostName = argv[ADDR_INDEX];
     if ((hostPtr = gethostbyname(hostName)) == NULL)
     {
-        fprintf(stderr, "Failure: incorrect hostname");
+        fprintf(stderr, "Failure: incorrect hostname\n");
         return EXIT_FAILURE;
     }
 
@@ -47,7 +48,7 @@ int main(int argc, char **argv)
     sock_FD = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock_FD < 0)
     {
-        perror("Failure: unable to create socket");
+        perror("Failure: unable to create socket\n");
         return EXIT_FAILURE;
     }
 
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
     const int enable_reuse = 1;
     if (setsockopt(sock_FD, SOL_SOCKET, SO_REUSEADDR, &enable_reuse, sizeof(enable_reuse)) < 0)
     {
-        perror("Failure: unable to make server address and port reuseable");
+        perror("Failure: unable to make server address and port reuseable\n");
         return EXIT_FAILURE;
     }
 
@@ -70,26 +71,71 @@ int main(int argc, char **argv)
     nbytes = connect(sock_FD, (struct sockaddr *)&server_addr, server_size);
     if (nbytes < 0)
     {
-        perror("Failure: unable to connect to server");
+        perror("Failure: unable to connect to server\n");
         return EXIT_FAILURE;
     }
 
-    //build message
+    // strings for request
     char requestedTopic[MAX_STRING_SIZE];
-    concatArrayOfStrings(argv, requestedTopic, TOPIC_START_INDEX, argc, argc, " ");
+    char optionInput[MAX_STRING_SIZE];
+    char *options[] = {"sub", "exit"};
 
-    buffer = buildSubscriberMessage(requestedTopic, buffer);
+    while (runs)
+    {
+        if (argc < SUBSCRIBER_ARGS_NUMBER) // if no other argument is given change into client mode
+        {
+            int invalidInput = 1;
+            while (invalidInput)
+            {
+                fprintf(stderr, "You're currently in subscriber client mode!\nType one of the following options to continue :\n%s\n%s\n", options[0], options[1]);
+                if(getUserInput(optionInput))
+                {
+                    fprintf(stderr, "Something went wrong..\n\n");
+                    return EXIT_FAILURE;
+                }
+                else if (strcmp(optionInput, options[0]) == 0) // case if subscribe was invoked
+                {
+                    while (invalidInput) // ask for requested topic until correct input
+                    {
+                        fprintf(stderr, "\nInvoked subscribe..\nEnter requested topic to continue :\n");
+                        if(getUserInput(requestedTopic))
+                        {
+                            fprintf(stderr, "Something went wrong..\n\n");
+                            return EXIT_FAILURE;
+                        }
+                        else if (strlen(requestedTopic) > 0) // valid topic was entered
+                        {
+                            invalidInput = 0; // end loops for user input
+                        }
+                    }
+                }
+                else if (strcmp(optionInput, options[1]) == 0) // case if exit was invoked
+                {
+                    fprintf(stderr, "Leaving..\n");
+                    return EXIT_SUCCESS;
+                }
+                else // case if no valid option was entered
+                {
+                    fprintf(stderr, "Invalid input!\n\n");
+                }
+            }
+        } 
+        else // case for correct single line instruction invoke
+        {
+            runs = 0;
+            concatArrayOfStrings(argv, requestedTopic, TOPIC_START_INDEX, argc, argc, " ");
+        }
 
-    // send message
-    streamLength = strlen(buffer);
-    nbytes = sendto(sock_FD, buffer, streamLength, 0, (struct sockaddr *)&server_addr, server_size);
-    //buffer = sendMsg(sock_FD, buffer, streamLength);
-    fprintf(stderr, "Send: %s\n", buffer);
+        buffer = buildSubscriberMessage(requestedTopic, buffer);
 
-    // receive message
-    nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, &server_size);
-    //buffer = receiveMsg(sock_FD, buffer);
-    fprintf(stderr, "Received-Message: %s\n", buffer);
+        // send message
+        nbytes = sendto(sock_FD, buffer, strlen(buffer), 0, (struct sockaddr *)&server_addr, server_size);
+        fprintf(stderr, "\nSend: %s\n", buffer);
+
+        // receive message
+        nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, &server_size);
+        fprintf(stderr, "Received-Message: %s\n\n", buffer);
+    }
 
     close(sock_FD);
     return EXIT_SUCCESS;

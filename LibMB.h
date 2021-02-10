@@ -14,6 +14,7 @@
 */
 #define TERMINAL_ARGS_NUMBER 3
 #define PUBLISHER_ARGS_NUMBER 5
+#define SUBSCRIBER_ARGS_NUMBER 3
 #define TOPIC_START_INDEX 2
 
 #define BACKLOG 5
@@ -156,6 +157,13 @@ int getDelimiterIndex(char *src[], int size, const char *delimiter);
  * @return              topic name with spaces
 */
 char *incomingMessagePrefixHandler(char *message);
+
+/**
+ * Function to get user input inside argument
+ * @param dest String for input
+ * @return 0 if successful, else 1
+ */
+int getUserInput(char *dest);
 
 // --- Not yet decided - in progress ---
 // int getCommand(char *command);

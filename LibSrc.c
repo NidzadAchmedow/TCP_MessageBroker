@@ -250,3 +250,15 @@ char *incomingMessagePrefixHandler(char *message){
     }
     return message;
 }
+
+int getUserInput(char *dest) 
+{
+    dest[0] = '\0';
+    fprintf(stderr, "$ "); // to signal user input
+    if(fgets(dest, MAX_STRING_SIZE, stdin))
+    {
+        dest[strlen(dest) -1] = '\0'; // remove new line character at the end
+        return EXIT_SUCCESS;    
+    }
+    return EXIT_FAILURE;
+}
