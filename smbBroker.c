@@ -79,7 +79,7 @@ int main(int argc, char **argv)
     {
         nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&client_addr, &client_size);
         buffer[nbytes] = '\0';
-        fprintf(stderr, "Client Addr: %s\n", inet_ntoa(client_addr.sin_addr)); // get client addr
+        fprintf(stderr, "Request from client: %s\n", inet_ntoa(client_addr.sin_addr)); // get client addr
         fprintf(stderr, "Received Message: %s\n", buffer);
 
         // case: SUB
@@ -107,6 +107,13 @@ int main(int argc, char **argv)
             // get requested topic
             else
             {
+                // set topicMessage to 0 to prevent data rubbish from former long messages and copy content of buffer in topicMessage
+                memset(topicMessage, 0, BUF_SIZE);
+                memcpy(topicMessage, buffer, strlen(buffer));
+
+                // to handle long topic names with spaces and save them in topicMessage as string
+                incomingMessagePrefixHandler(topicMessage);
+                
                 // search for requested topic in file and send it to subscriber
                 if ((getRequestedTopic(topicMessage, buffer)) == NULL)
                 {
@@ -134,10 +141,7 @@ int main(int argc, char **argv)
             topicPrefix = incomingMessagePrefixHandler(buffer);
             sprintf(buffer, "%s %s", topicPrefix, topicMessage);
             
-            printf("publish build string: %s\n", buffer);
-
             int writeCheck = writeFile(fileName, buffer);
-            printf("Write-Check -> 0 (successful): %d\n", writeCheck);
         }
     }
 
