@@ -10,25 +10,32 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 ## Umsetzung
 
 **Subscriber:**
+
 - Kann ein Topic vom Broker anfragen und bekommt eine oder mehrere Antworten
   - Topic kann mehrere Wörter enthalten
   - Bleibt nach erfolgreicher Eingabe auf Abruf um Updates entgegen zu nehmen
+
 <br>
+
 - Eingaben um Subscriber erfolgreich zu benutzen :
   
 - Direkt als Kommando :
+
 ```
 ./sub hostname topic
 ```
 - Start im Client-Modus um bei Eingabe zu helfen :
+
 ```
 ./sub hostname
 ```
 - Wildcard bietet Möglichkeit jedes Topic abzurufen :
+
 ```
 ./sub hostname "#"
 ```
 oder
+
 ```
 ./sub hostname -> sub -> #
 ```
@@ -37,13 +44,18 @@ oder
 **Publisher:**
 - Kann dem Broker unter einem bestimmten Topic eine Message übermitteln
   - Topic sowie Message können mehrere Wörter enthalten
+
 <br>
+
 - Eingaben um Publisher erfolgreich zu benutzen :
   - Direkt als Kommando
+
 ```
 ./pub hostname topic "<" message
+
 ```
 - Start im Client-Modus um mehrere Anfragen zu bearbeiten
+
 ```
 ./pub hostname
 ```
