@@ -262,3 +262,79 @@ int getUserInput(char *dest)
     }
     return EXIT_FAILURE;
 }
+
+void deleteLine(FILE *src, FILE *tmp, const int line) {
+    char *buffer = (char *)malloc(BUF_SIZE * sizeof(char));
+
+    int cnt = 0;
+
+    while (fgets(buffer, BUF_SIZE, src))
+    {
+        if (cnt != line) {
+            fputs(buffer, tmp);
+        }
+        cnt++;
+    }
+    free(buffer);
+}
+
+int removeLineFromFile(int line, char *fileName) {
+    FILE *srcFileStream;
+    FILE *tmpFileStream;
+
+    char *tmpFileName = TEMP_FILE_TO_DELETE;
+
+    int lineToDelete = line;
+
+    srcFileStream = fopen(fileName, "r");
+    tmpFileStream = fopen(tmpFileName, "a");
+
+    if (srcFileStream == NULL || tmpFileStream == NULL)
+    {
+        perror("Failure: unable to open file!");
+        return -1;
+    }
+
+    deleteLine(srcFileStream, tmpFileStream, lineToDelete);
+
+    fclose(srcFileStream);
+    fclose(tmpFileStream);
+
+    remove(fileName);
+    rename(tmpFileName, fileName);
+    return 0;
+}
+
+int getLineOfTopic(char *nameOfTopic)
+{
+    FILE *fileStream;
+    char *buffer = (char *)malloc(BUF_SIZE * sizeof(char));
+    int line = 0;
+    if (fileStream = fopen(FILENAME_FOR_TOPICS, "r"))
+    {
+        while ((fgets(buffer, BUF_SIZE, fileStream)))
+        {
+            if ((strncmp(buffer, nameOfTopic, strlen(nameOfTopic))) == 0)
+            {
+                free(buffer);
+                return line;
+            }
+            line++;
+        }
+    }
+    free(buffer);
+    return -1;
+}
+
+int checkUpdateTopicFile(char *topicToUpdate) {
+    int lineOfOldTopic;
+
+    // no topic to update
+    if ((lineOfOldTopic = getLineOfTopic(topicToUpdate)) < 0)
+    {
+        return -1;
+    }
+
+    removeLineFromFile(lineOfOldTopic, FILENAME_FOR_TOPICS);
+    return 1;
+}

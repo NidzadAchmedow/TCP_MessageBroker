@@ -35,6 +35,7 @@
 
 #define FILENAME_FOR_TOPICS "Topic.txt"
 #define FILENAME_SUBSCRIBER "Subscriber.txt"
+#define TEMP_FILE_TO_DELETE "tmp-delete-file.txt"
 
 /*
     Methods ready
@@ -165,10 +166,41 @@ char *incomingMessagePrefixHandler(char *message);
  */
 int getUserInput(char *dest);
 
-// --- Not yet decided - in progress ---
-// int getCommand(char *command);
-// int sendACKMsg(int sock);
-// int sendFile(int sock, char *fileName);
+/**
+ * Helper function for "removeLineFromFile" - litte subroutine
+ * to delete the wanted line in file.
+ * @param src   Source file to delete line from
+ * @param tmp   Temporary file which includes content of source file without the line to delete
+ * @param line  Index which contains the line to delete in file
+*/
+void deleteLine(FILE *src, FILE *tmp, const int line);
+
+/**
+ * Deletes a line in the requested .txt file.
+ * @param line      Line to delete from file
+ * @param fileName  Txt file to delete line from
+ * @return          0 if no error occurs
+ * @exception       -1 if there is a file error 
+ */
+int removeLineFromFile(int line, char *fileName);
+
+/**
+ * Helper function of "removeLineFromFile" - search for topic
+ * in file and returns the index of it.
+ * @param   nameOfTopic   Topic to search in file and get line from
+ * @return                Found index line of topic
+ * @exception             -1 if topic is not in file
+ */
+int getLineOfTopic(char *nameOfTopic);
+
+/**
+ * Seaches in topic file for the old topic and deletes it from file
+ * to prevent redundancy.
+ * @param   topicToUpdate     Name of topic to check old topic
+ * @return                    1 if old topic was deleted
+ * @exception                 -1 if there is no old topic 
+ */
+int checkUpdateTopicFile(char *topicToUpdate);
 
 
 #endif
