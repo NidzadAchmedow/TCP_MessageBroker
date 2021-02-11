@@ -27,6 +27,8 @@ int main(int argc, char **argv)
     buffer = (char *)malloc(BUF_SIZE * sizeof(char));
     char *topicMessage;
     topicMessage = (char *)malloc(BUF_SIZE * sizeof(char));
+    char *topicPrefix;
+    topicPrefix = (char *)malloc(BUF_SIZE * sizeof(char));
 
     // 2 dim array to store whole topics from file -> usecase: # (wildcard)
     char **splitBuffer;
@@ -77,6 +79,7 @@ int main(int argc, char **argv)
     {
         nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&client_addr, &client_size);
         buffer[nbytes] = '\0';
+        fprintf(stderr, "Request from client: %s\n", inet_ntoa(client_addr.sin_addr)); // get client addr
         fprintf(stderr, "Received Message: %s\n", buffer);
 
         // case: SUB
@@ -104,6 +107,13 @@ int main(int argc, char **argv)
             // get requested topic
             else
             {
+                // set topicMessage to 0 to prevent data rubbish from former long messages and copy content of buffer in topicMessage
+                memset(topicMessage, 0, BUF_SIZE);
+                memcpy(topicMessage, buffer, strlen(buffer));
+
+                // to handle long topic names with spaces and save them in topicMessage as string
+                incomingMessagePrefixHandler(topicMessage);
+
                 // search for requested topic in file and send it to subscriber
                 if ((getRequestedTopic(topicMessage, buffer)) == NULL)
                 {
@@ -119,7 +129,7 @@ int main(int argc, char **argv)
         else if (checkMessageType(buffer) == 1)
         {
             // split message in [PUB Topic] and [Message]
-            // structure: [pub topic <message] -> [sub topic] [message]
+            // structure: [pub topic < message] -> [sub topic] [message]
             splitBuffer = splitMessageByToken(buffer, PUB_SPLIT_TOKEN, splitBuffer);
 
             // store [message] of topic in topicMessage storage
@@ -127,20 +137,29 @@ int main(int argc, char **argv)
             streamLength = strlen(splitBuffer[1]);
             topicMessage[streamLength] = '\0';
 
-            // build topic string [TOPIC MESSAGE] to save in "Topic.txt"
-            splitBuffer = splitMessageByToken(buffer, " ", splitBuffer);
-            sprintf(buffer, "%s %s", splitBuffer[1], topicMessage);
-            
-            printf("publish build string: %s\n", buffer);
+            // store topic name in topicPrefix and build file entry
+            topicPrefix = incomingMessagePrefixHandler(buffer);
 
-            int writeCheck = writeFile(fileName, buffer);
-            printf("Write-Check -> 0 (successful): %d\n", writeCheck);
+            // there is no old topic to update
+            if (checkUpdateTopicFile(topicPrefix) < 0)
+            {
+                sprintf(buffer, "%s %s", topicPrefix, topicMessage);
+                int writeCheck = writeFile(fileName, buffer);
+            }
+
+            // there is a update (line with old topic is now deleted) -> update topic with new message
+            else
+            {
+                sprintf(buffer, "%s %s", topicPrefix, topicMessage);
+                int writeCheck = writeFile(fileName, buffer);
+            }
         }
     }
 
     // set allocated storage in broker free
-    free(buffer);
+    // free(buffer);
     free(topicMessage);
+    free(topicPrefix);
     free(splitBuffer);
     for (int k = 0; k < sizeof(splitBuffer[k]); k++)
     {

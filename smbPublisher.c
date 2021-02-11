@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     // read from prompt
     if (argc < 2)
     {
-        fprintf(stderr, "Parameters to invoke %s: hostname [TOPIC < MESSAGE]\n", argv[0]);
+        fprintf(stderr, "Parameters to invoke %s: hostname [TOPIC \"<\" MESSAGE]\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     hostName = argv[ADDR_INDEX];
     if ((hostPtr = gethostbyname(hostName)) == NULL)
     {
-        fprintf(stderr, "Failure: incorrect hostname");
+        fprintf(stderr, "Failure: incorrect hostname\n");
         return EXIT_FAILURE;
     }
 
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     sock_FD = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock_FD < 0)
     {
-        perror("Failure: unable to create socket");
+        perror("Failure: unable to create socket\n");
         return EXIT_FAILURE;
     }
 
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     const int enable_reuse = 1;
     if (setsockopt(sock_FD, SOL_SOCKET, SO_REUSEADDR, &enable_reuse, sizeof(enable_reuse)) < 0)
     {
-        perror("Failure: unable to make server address and port reuseable");
+        perror("Failure: unable to make server address and port reuseable\n");
         return EXIT_FAILURE;
     }
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     nbytes = connect(sock_FD, (struct sockaddr *)&server_addr, server_size);
     if (nbytes < 0)
     {
-        perror("Failure: unable to connect to server");
+        perror("Failure: unable to connect to server\n");
         return EXIT_FAILURE;
     }
 
@@ -155,7 +155,6 @@ int main(int argc, char **argv)
     close(sock_FD);
     return EXIT_SUCCESS;
 }
-
 
 /*
     Source:
