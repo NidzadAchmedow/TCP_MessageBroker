@@ -22,6 +22,8 @@ int main(int argc, char **argv)
     // check-values
     int nbytes, streamLength;
     int indexOfDelimiter = getDelimiterIndex(argv, argc, PUB_SPLIT_TOKEN);
+
+    // variable to control loop on program
     int runs = 1;
     
     // server address variables
@@ -30,7 +32,7 @@ int main(int argc, char **argv)
     struct hostent *hostPtr;
     char *hostName = NULL;
 
-    // read from prompt
+    // check if command is valid
     if (argc < 2)
     {
         fprintf(stderr, "Parameters to invoke %s: hostname [TOPIC \"<\" MESSAGE]\n", argv[0]);
@@ -53,9 +55,11 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
+    //! missing documentation
     server_size = sizeof(server_addr);
     memset(&server_addr, 0, server_size);
 
+    //! missing documentation
     server_addr.sin_family = AF_INET;
     memcpy((void *)&server_addr.sin_addr.s_addr, (void *)hostPtr->h_addr, hostPtr->h_length);
     server_addr.sin_port = htons(SERVER_PORT);
@@ -82,12 +86,15 @@ int main(int argc, char **argv)
     char optionInput[MAX_STRING_SIZE];
     char *options[] = {"pub", "exit"};
 
+    // int to control user request loops
+    int invalidInput = 1;
+
+    // loop to keep publishing if wanted
     while (runs)
     {
-        // build message for broker
         if (argc < PUBLISHER_ARGS_NUMBER || indexOfDelimiter < TOPIC_START_INDEX) // if invoke was not correct publisher goes into client mode
         {
-            int invalidInput = 1;
+            invalidInput = 1;
             while (invalidInput)
             {
                 fprintf(stderr, "You're currently in publisher client mode!\nType one of the following options to continue :\n%s\n%s\n", options[0], options[1]);
@@ -130,7 +137,7 @@ int main(int argc, char **argv)
                 }
                 else if (strcmp(optionInput, options[1]) == 0) // case if exit was invoked
                 {
-                    fprintf(stderr, "Leaving..\n");
+                    fprintf(stderr, "\nLeaving..\n");
                     return EXIT_SUCCESS;
                 }
                 else // case if no valid option was entered
@@ -152,6 +159,7 @@ int main(int argc, char **argv)
         nbytes = sendto(sock_FD, buffer, strlen(buffer), 0, (struct sockaddr *)&server_addr, server_size);
         fprintf(stderr, "\nSend: %s\n\n", buffer);
     }
+
     close(sock_FD);
     return EXIT_SUCCESS;
 }
