@@ -12,18 +12,18 @@ für die kommende TCP/IP Aufgabe zum Message Broker.
 **Subscriber:**
 - Kann ein Topic vom Broker anfragen und bekommt eine oder mehrere Antworten
   - Topic kann mehrere Wörter enthalten
-  
+  - Bleibt nach erfolgreicher Eingabe auf Abruf um Updates entgegen zu nehmen
 <br>
-
 - Eingaben um Subscriber erfolgreich zu benutzen :
-  - Direkt als Kommando
-  ```
-  ./sub hostname topic
-  ```
-  - Start im Client-Modus um mehrere Anfragen zu bearbeiten
-  ```
-  ./sub hostname
-  ```
+  
+- Direkt als Kommando :
+```
+./sub hostname topic
+```
+- Start im Client-Modus um bei Eingabe zu helfen :
+```
+./sub hostname
+```
 - Wildcard bietet Möglichkeit jedes Topic abzurufen :
 ```
 ./sub hostname "#"
@@ -32,22 +32,21 @@ oder
 ```
 ./sub hostname -> sub -> #
 ```
+<br>
 
 **Publisher:**
 - Kann dem Broker unter einem bestimmten Topic eine Message übermitteln
   - Topic sowie Message können mehrere Wörter enthalten
-  
 <br>
-
 - Eingaben um Publisher erfolgreich zu benutzen :
   - Direkt als Kommando
-  ```
-  ./pub hostname topic "<" message
-  ```
-  - Start im Client-Modus um mehrere Anfragen zu bearbeiten
-  ```
-  ./pub hostname
-  ```
+```
+./pub hostname topic "<" message
+```
+- Start im Client-Modus um mehrere Anfragen zu bearbeiten
+```
+./pub hostname
+```
 
 <br>
 
@@ -59,6 +58,20 @@ oder
   - Subscriber: `SUB TOPIC` 
 - Nachrichten sind durch den Präfix mit `PUB` und `SUB` eindeutig zuzuordnen
   - Inhalt der Nachrichten kann dann in jeweiliges File eingetragen werden
+
+<br>
+
+**Client(optional):**
+- Kombiniert die Funktionen von Subscriber und Publisher
+  - Subscriber kann nur den aktuellen Stand fetchen
+  - Kann beliebig oft mit Broker interagieren
+  
+<br>
+
+- Eingaben um Client erfolgreich zu benutzen :
+```
+./cli hostname
+```
 
 <br>
 
@@ -131,4 +144,10 @@ gcc -o sub smbSubscriber.c LibSrc.o -lm -fopenmp
 
 ```
 gcc -o pub smbPublisher.c LibSrc.o -lm -fopenmp
+```
+
+> Kompilierung Client (Publisher/ Subscriber):
+
+```
+gcc -o cli smbClient.c LibSrc.o -lm -fopenmp
 ```
