@@ -50,17 +50,6 @@ oder
 
 <br>
 
-**Broker:**
-- verwaltet die Topics, Messages und Subscriber in Files
-  - damit ist der Broker *statisch*
-- Server bekommt Nachrichten von Publisher und Subscriber
-  - Publisher: `PUB TOPIC <MSG`
-  - Subscriber: `SUB TOPIC` 
-- Nachrichten sind durch den Präfix mit `PUB` und `SUB` eindeutig zuzuordnen
-  - Inhalt der Nachrichten kann dann in jeweiliges File eingetragen werden
-
-<br>
-
 **Client(optional):**
 - Kombiniert die Funktionen von Subscriber und Publisher
   - Subscriber kann nur den aktuellen Stand fetchen
@@ -72,6 +61,17 @@ oder
 ```
 ./cli hostname
 ```
+
+<br>
+
+**Broker:**
+- verwaltet die Topics, Messages und Subscriber in Files
+  - damit ist der Broker *statisch*
+- Server bekommt Nachrichten von Publisher und Subscriber
+  - Publisher: `PUB TOPIC <MSG`
+  - Subscriber: `SUB TOPIC` 
+- Nachrichten sind durch den Präfix mit `PUB` und `SUB` eindeutig zuzuordnen
+  - Inhalt der Nachrichten kann dann in jeweiliges File eingetragen werden
 
 <br>
 
