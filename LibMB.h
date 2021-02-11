@@ -7,11 +7,7 @@
 #define BUF_SIZE 1024
 
 #define LENGTH_FILE_NAME 255
-/* 
-    structure:
-        [programm] [sub/pub] [topic] [msg]
-    if less args -> something is not right
-*/
+
 #define TERMINAL_ARGS_NUMBER 3
 #define PUBLISHER_ARGS_NUMBER 5
 #define SUBSCRIBER_ARGS_NUMBER 3

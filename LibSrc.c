@@ -108,7 +108,6 @@ int readFileContent(char *fileName, char **buffer)
         return -1;
     }
 }
-// https://stackoverflow.com/questions/2225850/c-c-how-to-copy-a-multidimensional-char-array-without-nested-loops
 
 char *getRequestedTopic(char *nameOfTopic, char *buffer)
 {

@@ -113,7 +113,7 @@ int main(int argc, char **argv)
 
                 // to handle long topic names with spaces and save them in topicMessage as string
                 incomingMessagePrefixHandler(topicMessage);
-                
+
                 // search for requested topic in file and send it to subscriber
                 if ((getRequestedTopic(topicMessage, buffer)) == NULL)
                 {
@@ -137,16 +137,27 @@ int main(int argc, char **argv)
             streamLength = strlen(splitBuffer[1]);
             topicMessage[streamLength] = '\0';
 
-            // build topic string [TOPIC MESSAGE] to save in "Topic.txt"
+            // store topic name in topicPrefix and build file entry
             topicPrefix = incomingMessagePrefixHandler(buffer);
-            sprintf(buffer, "%s %s", topicPrefix, topicMessage);
-            
-            int writeCheck = writeFile(fileName, buffer);
+
+            // there is no old topic to update
+            if (checkUpdateTopicFile(topicPrefix) < 0)
+            {
+                sprintf(buffer, "%s %s", topicPrefix, topicMessage);
+                int writeCheck = writeFile(fileName, buffer);
+            }
+
+            // there is a update (line with old topic is now deleted) -> update topic with new message
+            else
+            {
+                sprintf(buffer, "%s %s", topicPrefix, topicMessage);
+                int writeCheck = writeFile(fileName, buffer);
+            }
         }
     }
 
     // set allocated storage in broker free
-    free(buffer);
+    // free(buffer);
     free(topicMessage);
     free(topicPrefix);
     free(splitBuffer);
