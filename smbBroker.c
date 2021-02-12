@@ -192,6 +192,8 @@ int main(int argc, char **argv)
                 int writeCheck = writeFile(fileName, buffer);
             }
         }
+        // print new line to make incoming client and request more readable
+        fprintf(stderr, "\n");
     }
 
     // set allocated storage in broker free

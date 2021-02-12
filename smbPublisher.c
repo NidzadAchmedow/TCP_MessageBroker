@@ -55,11 +55,9 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    //! missing documentation
+    // establish server structure
     server_size = sizeof(server_addr);
     memset(&server_addr, 0, server_size);
-
-    //! missing documentation
     server_addr.sin_family = AF_INET;
     memcpy((void *)&server_addr.sin_addr.s_addr, (void *)hostPtr->h_addr, hostPtr->h_length);
     server_addr.sin_port = htons(SERVER_PORT);
