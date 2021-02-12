@@ -1,0 +1,10 @@
+*.o
+bro
+sub
+pub
+cli
+*.txt
+client
+server
+test
+test.c
