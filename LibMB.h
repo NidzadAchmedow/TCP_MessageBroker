@@ -23,6 +23,9 @@
 
 #define MAX_STRING_SIZE 255
 
+// time between update requests for subscriber
+#define TIME_BETWEEN_REQUESTS 5
+
 // index of subscriber
 #define ADDR_INDEX 1
 

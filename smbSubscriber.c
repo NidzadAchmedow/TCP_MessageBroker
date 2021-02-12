@@ -137,7 +137,16 @@ int main(int argc, char **argv)
     // loop to keep receiving updates on subscribed topic(s)
     while (1)
     {
-        fprintf(stderr, "Waiting for updates.. (Exit with ctrl + c)\n");
+        fprintf(stderr, "Waiting for updates.. (Exit with ctrl + c)\n\n");
+
+        // wait before next update
+        sleep(TIME_BETWEEN_REQUESTS);
+
+        // write requested topic into buffer again
+        buffer = buildSubscriberMessage(requestedTopic, buffer);
+        
+        // silent send subscribe message
+        nbytes = sendto(sock_FD, buffer, strlen(buffer), 0, (struct sockaddr *)&server_addr, server_size);
 
         // receive message
         nbytes = recvfrom(sock_FD, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, &server_size);
