@@ -13,8 +13,6 @@ Besondere Nachricht (Topic):
 
 **#** - hier alle Topics beim Broker an Subscriber weiterleiten
 
-<br>
-
 Broker soll Nachrichten vom Publisher empfangen und an Subscriber weiterleiten.
 Dazu muss der Broker ständig laufen und auf eingehende Nachrichten von Publisher
 oder Subscriber hören.
