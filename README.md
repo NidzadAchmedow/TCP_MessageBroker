@@ -46,11 +46,7 @@ oder Subscriber hören.
 ```
 ./sub hostname "#"
 ```
-oder
 
-```
-./sub hostname -> sub -> #
-```
 <br>
 
 **Publisher:**
@@ -64,7 +60,6 @@ oder
 
 ```
 ./pub hostname topic "<" message
-
 ```
 - Start im Client-Modus um mehrere Anfragen zu bearbeiten
 
