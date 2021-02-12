@@ -38,8 +38,8 @@
 */
 
 /**
- * Check if message is a SUB or PUB request.
- * @param type  String which includes PUB or SUB
+ * Check if incoming message is a SUB or PUB request.
+ * @param type  Request which includes PUB or SUB
  * @return      0 for SUB and 1 for PUB
  * @exception   -1 if type is not PUB or SUB
 */
@@ -49,7 +49,7 @@ int checkMessageType(char *type);
  * Split a message with any given token and store it in a 2 dim. array.
  * @param msgToSplit    String you want to split
  * @param token         Token to split string with
- * @param splittedMsg   2 dim array to store splitted message
+ * @param splittedMsg   2 dim. array to store splitted message
  * @return              Splitted string as 2 dim array
 */
 char **splitMessageByToken(char *msgToSplit, char *token, char **splittedMsg);
@@ -92,20 +92,20 @@ char* receiveMsg(int sock, char *buffer);
 
 /**
  * Write a string in a specific file.
- * @param fileName      Name of file to write content
- * @param content       Content to write in file
+ * @param fileName      Name of file
+ * @param content       String
  * @return              0 if successful
  * @exception           -1 if error occurs
 */
 int writeFile(char *fileName, char *content);
 
 /**
-    Read the given file and store the content of the file in buffer.
-    MAX 50 Entries!
-    @param filenName    file to read from
-    @param buffer       pointer to store content of file
-    @return             length of entries 
-    @exception          returns -1 if there is an error
+    Read the given file and store the content of the file in 2 dim. array buffer.
+    Limit defined in constant LENGTH_OF_ENTRIES
+    @param filenName    File to read from
+    @param buffer       2 dim. array to store content of file
+    @return             Length of entries as int
+    @exception          -1 if there is an error
 */
 int readFileContent(char *fileName, char **buffer);
 
@@ -119,10 +119,10 @@ int readFileContent(char *fileName, char **buffer);
 char *getRequestedTopic(char *nameOfTopic, char *buffer);
 
 /**
- * Concatenate content in 2 dim array to a 1 dim array.
- * @param arrToConcat       2 dim array with content to concatenate
- * @param storeConcat       1 dim array to store content of arrToConcat
- * @return                  storeConcat with content of arrToConcat
+ * Concatenate content of 2 dim array in a 1 dim array.
+ * @param arrToConcat       2 dim. array with content to concatenate
+ * @param storeConcat       1 dim. array to store content of 2 dim. array
+ * @return                  1 dim. array with content of 2 dim. array
 */
 char *concat2DimArray(char **arrToConcat, char *storeConcat);
 
@@ -150,8 +150,8 @@ int getDelimiterIndex(char *src[], int size, const char *delimiter);
 /**
  * To handle a incoming message which contains spaces -> [pub topic name with spaces < message]
  * and build a string which only contains topic name -> [topic name with spaces]
- * @param message       incoming message from publisher
- * @return              topic name with spaces
+ * @param message       Incoming message from publisher
+ * @return              Topic name with spaces
 */
 char *incomingMessagePrefixHandler(char *message);
 
@@ -163,8 +163,7 @@ char *incomingMessagePrefixHandler(char *message);
 int getUserInput(char *dest);
 
 /**
- * Helper function for "removeLineFromFile" - litte subroutine
- * to delete the wanted line in file.
+ * Helper function for "removeLineFromFile" - subroutine to delete the wanted line in file.
  * @param src   Source file to delete line from
  * @param tmp   Temporary file which includes content of source file without the line to delete
  * @param line  Index which contains the line to delete in file
@@ -181,18 +180,16 @@ void deleteLine(FILE *src, FILE *tmp, const int line);
 int removeLineFromFile(int line, char *fileName);
 
 /**
- * Helper function of "removeLineFromFile" - search for topic
- * in file and returns the index of it.
+ * Helper function for "removeLineFromFile" - search for topic in file and returns the index of it.
  * @param   nameOfTopic   Topic to search in file and get line from
- * @return                Found index line of topic
+ * @return                Index of topic
  * @exception             -1 if topic is not in file
  */
 int getLineOfTopic(char *nameOfTopic);
 
 /**
- * Seaches in topic file for the old topic and deletes it from file
- * to prevent redundancy.
- * @param   topicToUpdate     Name of topic to check old topic
+ * Seaches in topic file for the old topic and deletes it from file to prevent redundancy.
+ * @param   topicToUpdate     Name of topic to check for update
  * @return                    1 if old topic was deleted
  * @exception                 -1 if there is no old topic 
  */
